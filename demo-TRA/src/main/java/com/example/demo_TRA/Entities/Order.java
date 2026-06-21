@@ -1,6 +1,7 @@
 package com.example.demo_TRA.Entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,8 @@ public class Order extends BaseEntity{
     private String deliveryNotes;
 
 
-
+    @ManyToOne
+    private Customer customer;
 
 
 }
