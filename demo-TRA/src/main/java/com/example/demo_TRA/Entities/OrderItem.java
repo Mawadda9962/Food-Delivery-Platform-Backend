@@ -11,5 +11,8 @@ import lombok.NoArgsConstructor;
 @Entity
 public class OrderItem {
     private Integer quantity;
+    private Double unitPrice;
+    private Double totalPrice;
+
 
 }
