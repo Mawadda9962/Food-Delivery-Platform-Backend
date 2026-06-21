@@ -29,7 +29,8 @@ public class Customer {
     @OneToMany
     private List<Order> orders;
 
-    @
+    @OneToMany
+    private List<Review> reviews;
 
 
 
