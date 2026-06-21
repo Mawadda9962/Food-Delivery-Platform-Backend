@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class CorporateOrder extends BaseEntity{
     private String corporateCode;
+    private String
 
 
 }
