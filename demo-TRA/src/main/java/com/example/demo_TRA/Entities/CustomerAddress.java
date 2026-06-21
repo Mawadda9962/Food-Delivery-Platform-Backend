@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Entity
 public class CustomerAddress {
   private String street;
+  private String city;
+
 
 
 
