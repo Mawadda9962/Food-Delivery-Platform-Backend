@@ -16,12 +16,10 @@ public class OrderItem {
     private Double totalPrice;
     private String specialInstructions;
 
-
     @ManyToOne
     private Order order;
 
     @ManyToOne
     private MenuItem menuItem;
-
 
 }
