@@ -20,5 +20,4 @@ public class CustomerAddress extends BaseEntity {
   @ManyToOne
   private Customer customer;
 
-
 }
