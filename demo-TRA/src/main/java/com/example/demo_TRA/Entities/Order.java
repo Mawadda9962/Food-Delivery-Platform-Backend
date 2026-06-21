@@ -5,11 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
 @Entity
 public class Order extends BaseEntity{
     private String orderCode;
+    private LocalDate orderDate;
+    private String status;
+    private Double subtotal;
+    private Double deliveryFee;
+    private Double
+
 
 }
