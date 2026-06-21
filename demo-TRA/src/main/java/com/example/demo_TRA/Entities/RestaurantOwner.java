@@ -13,5 +13,7 @@ import lombok.NoArgsConstructor;
 public class RestaurantOwner extends BaseEntity{
 
     private String firstName;
+    private String lastName;
+
 
 }
