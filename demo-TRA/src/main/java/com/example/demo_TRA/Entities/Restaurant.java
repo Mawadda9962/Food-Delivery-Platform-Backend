@@ -1,4 +1,4 @@
 package com.example.demo_TRA.Entities;
 
-public class Restaurant {
+public class Restaurant extends {
 }
