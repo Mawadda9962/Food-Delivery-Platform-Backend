@@ -1,4 +1,15 @@
 package com.example.demo_TRA.Entities;
 
-public class Order {
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@Data
+@NoArgsConstructor
+@Entity
+public class Order extends BaseEntity{
+    private String orderCode;
+
 }
