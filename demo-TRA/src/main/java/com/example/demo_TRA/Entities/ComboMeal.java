@@ -19,7 +19,7 @@ public class ComboMeal extends BaseEntity{
 
 
     @ManyToOne
-    private Restaurant r
+    private Restaurant restaurant;
 
     @OneToMany
 
