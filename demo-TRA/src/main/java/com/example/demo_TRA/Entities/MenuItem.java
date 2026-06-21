@@ -15,5 +15,8 @@ public class MenuItem extends BaseEntity{
     private Double price;
     private Boolean isAvailable;
     private Boolean isVegetarian;
+    private Integer calories;
+
+
 
 }
