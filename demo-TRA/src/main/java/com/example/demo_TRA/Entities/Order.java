@@ -37,6 +37,9 @@ public class Order extends BaseEntity{
     private List<OrderItem> orderItems;
 
     @OneToOne
+    private Delivery delivery;
 
+    @OneToOne
+    private Payment payment;
 
 }
