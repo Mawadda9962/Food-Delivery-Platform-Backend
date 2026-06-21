@@ -17,6 +17,8 @@ public class Restaurant extends BaseEntity{
     private String openingTime;
     private String closingTime;
     private Double minOrderAmount;
+    private Double deliveryFee;
+    private
 
 
 
