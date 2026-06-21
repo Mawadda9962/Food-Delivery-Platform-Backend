@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
@@ -12,6 +14,9 @@ import lombok.NoArgsConstructor;
 public class CorporateOrder extends BaseEntity{
     private String corporateCode;
     private String companyName;
+    private String costCenter;
+    private LocalDate orderDate;
+
 
 
 
