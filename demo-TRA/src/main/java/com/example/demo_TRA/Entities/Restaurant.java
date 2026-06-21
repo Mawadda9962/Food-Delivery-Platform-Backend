@@ -15,6 +15,8 @@ public class Restaurant extends BaseEntity{
     private String description;
     private String cuisineType;
     private String openingTime;
+    private String closingTime;
+
 
 
 }
