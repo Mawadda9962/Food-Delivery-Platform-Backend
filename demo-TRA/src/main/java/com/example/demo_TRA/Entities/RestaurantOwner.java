@@ -11,4 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 public class RestaurantOwner extends BaseEntity{
+
+    private String firstName;
+
 }
