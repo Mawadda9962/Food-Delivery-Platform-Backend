@@ -26,5 +26,4 @@ public class Review extends BaseEntity{
 
     @ManyToOne
     private DeliveryDriver deliveryDriver;
-
 }

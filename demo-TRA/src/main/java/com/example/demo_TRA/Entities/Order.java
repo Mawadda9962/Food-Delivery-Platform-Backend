@@ -1,9 +1,6 @@
 package com.example.demo_TRA.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity
+
 public class Order extends BaseEntity{
     private String orderCode;
     private LocalDate orderDate;
