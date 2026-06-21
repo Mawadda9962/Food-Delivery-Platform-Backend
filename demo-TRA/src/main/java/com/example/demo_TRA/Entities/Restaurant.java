@@ -1,4 +1,16 @@
 package com.example.demo_TRA.Entities;
 
-public class Restaurant extends {
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@Data
+@NoArgsConstructor
+@Entity
+public class Restaurant extends BaseEntity{
+
+    private String firstName;
+
 }
