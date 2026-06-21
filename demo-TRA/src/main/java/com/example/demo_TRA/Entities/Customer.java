@@ -32,7 +32,7 @@ public class Customer extends BaseEntity {
     @OneToMany
     private List<Review> reviews;
 
-g
+
 
 
 }
