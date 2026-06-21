@@ -17,6 +17,5 @@ public class Delivery extends BaseEntity{
     private LocalDateTime assignedAt;
     private LocalDateTime pickedUpAt;
     private LocalDateTime deliveredAt;
-git push
 
 }
