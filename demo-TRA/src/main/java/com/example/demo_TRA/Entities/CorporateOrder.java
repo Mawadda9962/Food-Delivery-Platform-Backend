@@ -28,6 +28,4 @@ public class CorporateOrder extends BaseEntity{
     @OneToMany
     private List<OrderItem> orderItems;
 
-
-
 }
