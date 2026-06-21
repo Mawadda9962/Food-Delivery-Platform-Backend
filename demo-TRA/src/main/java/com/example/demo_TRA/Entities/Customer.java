@@ -6,7 +6,8 @@ public class Customer {
     private String email;
     private String phone;
     private Integer passwordHash;
-    private String
+    private String loyaltyPoints;
+
 
 
 
