@@ -1,6 +1,7 @@
 package com.example.demo_TRA.Entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,5 +19,6 @@ public class Payment extends BaseEntity {
     private String transactionRef;
     private LocalDateTime processedAt;
 
-
+    @OneToOne
+    private Order order;
 }
