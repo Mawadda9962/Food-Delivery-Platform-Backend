@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class Payment extends BaseEntity {
     public String paymentMethod;
     public String status;
+    public
 
 }
