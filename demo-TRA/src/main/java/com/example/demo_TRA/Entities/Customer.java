@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity
-public class Customer {
+public class Customer extends BaseEntity {
 
     private String firstName;
     private String lastName;

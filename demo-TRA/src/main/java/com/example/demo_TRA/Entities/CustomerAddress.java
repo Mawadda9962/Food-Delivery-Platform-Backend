@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-public class CustomerAddress {
+public class CustomerAddress extends BaseEntity {
   private String street;
   private String city;
   private String building;
@@ -18,5 +18,7 @@ public class CustomerAddress {
 
 
   @ManyToOne
+  private Customer customer;
+
 
 }
