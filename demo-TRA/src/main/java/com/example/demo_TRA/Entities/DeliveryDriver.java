@@ -10,5 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 public class DeliveryDriver extends BaseEntity{
+    private String firstName;
+    private String lastName;
+    private String email;
+    private
 
 }
