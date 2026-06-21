@@ -16,5 +16,5 @@ public class Delivery extends BaseEntity{
     private String status;
     private LocalDateTime assignedAt;
     private LocalDateTime pickedUpAt;
-    private L
+    private LocalDateTime
 }
