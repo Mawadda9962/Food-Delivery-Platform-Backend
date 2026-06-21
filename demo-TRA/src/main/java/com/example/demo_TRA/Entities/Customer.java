@@ -16,7 +16,7 @@ public class Customer extends BaseEntity {
 
     private String firstName;
     private String lastName;
-    private String email;
+    private String CustomerEmail;
     private String phone;
     private String passwordHash;
     private Integer loyaltyPoints;
