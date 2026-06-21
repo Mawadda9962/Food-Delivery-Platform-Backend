@@ -15,5 +15,7 @@ public class BaseEntity {
 
     private Integer id;
     private LocalDateTime createDate;
+    private LocalDateTime updateDate;
+
 
 }
