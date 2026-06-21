@@ -16,7 +16,6 @@ public class CustomerAddress extends BaseEntity {
   private String building;
   private Boolean isDefault;
 
-
   @ManyToOne
   private Customer customer;
 
