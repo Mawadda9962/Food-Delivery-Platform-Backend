@@ -34,5 +34,4 @@ public class Restaurant extends BaseEntity{
     @OneToMany
     private List<ComboMeal> comboMeals  ;
 
-
 }
