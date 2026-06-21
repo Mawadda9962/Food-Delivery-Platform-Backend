@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @AllArgsConstructor
 @Data
@@ -25,6 +26,7 @@ public class CorporateOrder extends BaseEntity{
     private Restaurant restaurant;
 
     @OneToMany
+    private List<OrderItem> orderItems;
 
 
 
