@@ -29,6 +29,4 @@ public class MenuItem extends BaseEntity{
     @OneToMany
     private List<OrderItem> orderItems;
 
-    @ManyToMany
-    private List<ComboMeal> comboMeals;
 }

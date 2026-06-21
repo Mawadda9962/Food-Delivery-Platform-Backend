@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity
-
+@Table(name = "orders")
 public class Order extends BaseEntity{
     private String orderCode;
     private LocalDate orderDate;
