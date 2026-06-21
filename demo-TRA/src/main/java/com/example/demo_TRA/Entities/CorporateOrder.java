@@ -17,7 +17,7 @@ public class CorporateOrder extends BaseEntity{
     private String costCenter;
     private LocalDate orderDate;
     private String status;
-    private
+    private Double
 
 
 
