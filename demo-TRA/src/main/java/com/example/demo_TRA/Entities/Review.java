@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Review extends BaseEntity{
     private String targetType;
-    private Integer
+    private Integer rating;
+    private String comment;
+
 
 }
