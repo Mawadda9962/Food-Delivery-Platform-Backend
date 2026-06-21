@@ -27,7 +27,9 @@ public class Customer {
     private List<CustomerAddress> addresses;
 
     @OneToMany
-    private
+    private List<Order> orders;
+
+    @
 
 
 
