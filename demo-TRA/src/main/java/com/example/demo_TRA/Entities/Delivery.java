@@ -1,6 +1,8 @@
 package com.example.demo_TRA.Entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,4 +20,9 @@ public class Delivery extends BaseEntity{
     private LocalDateTime pickedUpAt;
     private LocalDateTime deliveredAt;
 
+    @OneToOne
+    private Order order;
+
+    @ManyToOne
+    private DeliveryDriver deliveryDriver;
 }
