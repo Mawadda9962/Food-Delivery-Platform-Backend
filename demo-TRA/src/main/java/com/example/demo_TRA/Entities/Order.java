@@ -19,7 +19,8 @@ public class Order extends BaseEntity{
     private Double subtotal;
     private Double deliveryFee;
     private Double discountAmount;
-    private
+    private Double totalAmount;
+
 
 
 
