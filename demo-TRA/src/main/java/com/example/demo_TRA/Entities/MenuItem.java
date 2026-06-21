@@ -26,5 +26,5 @@ public class MenuItem extends BaseEntity{
     private Restaurant restaurant;
 
     @OneToMany
-    private List<OrderItem>
+    private List<OrderItem> orderItems;
 }
