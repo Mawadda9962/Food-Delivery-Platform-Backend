@@ -31,13 +31,13 @@ public class Order extends BaseEntity{
     @ManyToOne
     private Restaurant restaurant;
 
-    @OneToMany
+    @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
 
-    @OneToOne
+    @OneToOne(mappedBy = "order")
     private Delivery delivery;
 
-    @OneToOne
+    @OneToOne(mappedBy = "order")
     private Payment payment;
 
 }

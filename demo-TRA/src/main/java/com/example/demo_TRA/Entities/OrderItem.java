@@ -20,6 +20,9 @@ public class OrderItem extends BaseEntity{
     private Order order;
 
     @ManyToOne
+    private CorporateOrder corporateOrder;
+
+    @ManyToOne
     private MenuItem menuItem;
 
 }
