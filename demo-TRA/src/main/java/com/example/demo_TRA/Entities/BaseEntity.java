@@ -18,5 +18,4 @@ public class BaseEntity {
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
     private Boolean isActive = true;
-
 }
