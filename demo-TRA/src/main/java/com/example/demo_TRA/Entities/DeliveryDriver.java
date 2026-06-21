@@ -15,6 +15,8 @@ public class DeliveryDriver extends BaseEntity{
     private String email;
     private String phone;
     private String passwordHash;
+    private String driverCode;
+
 
 
 
