@@ -10,4 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 public class ComboMeal extends BaseEntity{
+    private String comboName;
+    private String description;
+
 }
