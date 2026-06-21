@@ -20,7 +20,8 @@ public class Order extends BaseEntity{
     private Double deliveryFee;
     private Double discountAmount;
     private Double totalAmount;
-    private String
+    private String deliveryNotes;
+
 
 
 
