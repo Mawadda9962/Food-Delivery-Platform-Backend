@@ -28,10 +28,4 @@ public class DeliveryDriver extends BaseEntity{
     @OneToMany
     private List<Delivery> deliveries ;
 
-
-
-
-
-
-
 }
