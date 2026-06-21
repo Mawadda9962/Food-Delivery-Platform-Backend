@@ -13,7 +13,8 @@ public class ComboMeal extends BaseEntity{
     private String comboName;
     private String description;
     private Double totalPrice;
-    private Boolean
+    private Boolean isAvailable;
+
 
 
 }
