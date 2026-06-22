@@ -31,7 +31,7 @@ public class CustomerRequestDTO {
     private String customerCode;
 
 
-    public Customer toEntity(){
+    public Customer toEntity() {
         Customer customer = new Customer();
 
         customer.setFirstName(firstName);
@@ -39,32 +39,17 @@ public class CustomerRequestDTO {
         customer.setCustomerEmail(customerEmail);
         customer.setPhone(phone);
         customer.setCustomerCode(customerCode);
+        customer.setLoyaltyPoints(loyaltyPoints);
+        return customer;
+    }
 
-
-
-
-
-
-        public static ApplicantDTO convertToDTO(Applicant applicant){
-            ApplicantDTO dto = new ApplicantDTO();
-
-            dto.setId(applicant.getId());
-            dto.setFirstName(applicant.getFirstName());
-            dto.setLastName(applicant.getLastName());
-            dto.setNationality(applicant.getNationality());
-            dto.setPassportNumber(applicant.getPassportNumber());
-            dto.setCriminalRecorde(applicant.isCriminalRecorde());
-            return dto;
-        }
-
-        public static List<ApplicantDTO> convertToDTO(List<Applicant> applicants){
-            List<ApplicantDTO> dtos = new ArrayList<>();
-            for (Applicant applicant : applicants){
-                dtos.add(convertToDTO(applicant));
-            }
-            return dtos;
+        public void applyTo(Customer customer){
+        customer.setFirstName(firstName);
+        customer.setLastName(lastName);
+        customer.setCustomerEmail(customerEmail);
+        customer.setPhone(phone);
+        customer.setCustomerCode(customerCode);
+        customer.setLoyaltyPoints(loyaltyPoints);
         }
 
     }
-
-}
