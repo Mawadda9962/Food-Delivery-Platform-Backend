@@ -1,4 +1,4 @@
 package com.example.demo_TRA.Repositories;
 
-public interface ComboMealRepositories {
+public interface ComboMealRepository {
 }

@@ -1,4 +1,4 @@
 package com.example.demo_TRA.Repositories;
 
-public interface OrderRepositorie {
+public interface OrderRepository {
 }
