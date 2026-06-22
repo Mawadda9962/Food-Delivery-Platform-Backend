@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,14 +24,24 @@ public class CustomerResponseDTO {
         if (customer == null){
             return null;
         }
+
         CustomerResponseDTO dto = new CustomerResponseDTO();
 
-        customer.setFirstName(customer.getFirstName());
-        customer.setLastName(customer.getLastName());
-        customer.setCustomerEmail(customer.getCustomerEmail());
-        customer.setPhone(customer.getPhone());
-        customer.setCustomerCode(customer.getCustomerCode());
-        customer.setLoyaltyPoints(customer.getLoyaltyPoints());
+        dto.setFirstName(customer.getFirstName());
+        dto.setLastName(customer.getLastName());
+        dto.setCustomerEmail(customer.getCustomerEmail());
+        dto.setPhone(customer.getPhone());
+        dto.setCustomerCode(customer.getCustomerCode());
+        dto.setLoyaltyPoints(customer.getLoyaltyPoints());
         return dto;
+    }
+    public static List<CustomerResponseDTO> fromEntity(List<Customer> customers) {
+        List<CustomerResponseDTO> dtos = new ArrayList<>();
+        if (customers != null) {
+            for (Customer customer : customers) {
+                dtos.add(fromEntity(customer));
+            }
+        }
+        return dtos;
     }
 }
