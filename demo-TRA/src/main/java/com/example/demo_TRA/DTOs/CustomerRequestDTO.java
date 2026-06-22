@@ -36,6 +36,9 @@ public class CustomerRequestDTO {
 
         customer.setFirstName(firstName);
         customer.setLastName(lastName);
+        customer.setCustomerEmail(customerEmail);
+        customer.setPhone(phone);
+        customer.setCustomerCode(customerCode);
 
 
 
