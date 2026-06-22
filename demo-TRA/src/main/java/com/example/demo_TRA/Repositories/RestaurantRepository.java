@@ -22,4 +22,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant,Integer> 
     @Query("SELECT r FROM Restaurant r " + "WHERE r.owner.id = :ownerId AND r.isActive = true")
     List<Restaurant> findByOwnerId(@Param("ownerId") Integer ownerId);
 
+    @Query("SELECT r FROM Restaurant r " + "WHERE LOWER(r.name) LIKE LOWER(CONCAT('%', :keyword, '%')) AND r.isActive = true")
+    List<Restaurant> searchByNameKeyword(@Param("keyword") String keyword);
+
 }
