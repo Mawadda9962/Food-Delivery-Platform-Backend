@@ -1,5 +1,6 @@
 package com.example.demo_TRA.DTOs;
 
+import com.example.demo_TRA.Entities.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,5 +14,7 @@ public class CustomerSummaryDTO {
     private String lastName;
     private String customerCode;
 
-    public
+    public static CustomerSummaryDTO fromEntity(Customer customer){
+
+    }
 }
