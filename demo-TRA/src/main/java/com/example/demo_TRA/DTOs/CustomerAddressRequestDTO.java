@@ -1,5 +1,6 @@
 package com.example.demo_TRA.DTOs;
 
+import com.example.demo_TRA.Entities.CustomerAddress;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
