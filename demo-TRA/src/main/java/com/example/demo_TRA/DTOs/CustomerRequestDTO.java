@@ -7,4 +7,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CustomerRequestDTO {
 
+    private String firstName;
+    private String lastName;
+    private String customerEmail;
+    private String phone;
+    private Integer loyaltyPoints;
+    private String customerCode;
+
 }
