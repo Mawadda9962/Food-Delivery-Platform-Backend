@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 public class CustomerRequestDTO {
@@ -30,6 +33,34 @@ public class CustomerRequestDTO {
 
     public Customer toEntity(){
         Customer customer = new Customer();
+
+        customer.setFirstName(firstName);
+        customer.setLastName(lastName);
+
+
+
+
+
+
+        public static ApplicantDTO convertToDTO(Applicant applicant){
+            ApplicantDTO dto = new ApplicantDTO();
+
+            dto.setId(applicant.getId());
+            dto.setFirstName(applicant.getFirstName());
+            dto.setLastName(applicant.getLastName());
+            dto.setNationality(applicant.getNationality());
+            dto.setPassportNumber(applicant.getPassportNumber());
+            dto.setCriminalRecorde(applicant.isCriminalRecorde());
+            return dto;
+        }
+
+        public static List<ApplicantDTO> convertToDTO(List<Applicant> applicants){
+            List<ApplicantDTO> dtos = new ArrayList<>();
+            for (Applicant applicant : applicants){
+                dtos.add(convertToDTO(applicant));
+            }
+            return dtos;
+        }
 
     }
 
