@@ -31,7 +31,7 @@ public class CustomerRequestDTO {
     private String customerCode;
 
 
-    public Customer toEntity() {
+    public Customer toEntity() { //For Creating
         Customer customer = new Customer();
 
         customer.setFirstName(firstName);
@@ -39,17 +39,16 @@ public class CustomerRequestDTO {
         customer.setCustomerEmail(customerEmail);
         customer.setPhone(phone);
         customer.setCustomerCode(customerCode);
-        customer.setLoyaltyPoints(loyaltyPoints);
+        //customer.setLoyaltyPoints(loyaltyPoints);
         return customer;
     }
 
-        public void applyTo(Customer customer){
+        public void applyTo(Customer customer){ //For Updating
         customer.setFirstName(firstName);
         customer.setLastName(lastName);
         customer.setCustomerEmail(customerEmail);
         customer.setPhone(phone);
         customer.setCustomerCode(customerCode);
-        customer.setLoyaltyPoints(loyaltyPoints);
+        //customer.setLoyaltyPoints(loyaltyPoints);
         }
-
     }
