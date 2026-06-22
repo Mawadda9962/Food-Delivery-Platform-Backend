@@ -16,5 +16,12 @@ public class CustomerSummaryDTO {
 
     public static CustomerSummaryDTO fromEntity(Customer customer){
 
+        CustomerSummaryDTO dto = new CustomerSummaryDTO();
+
+        dto.setFirstName(customer.getFirstName());
+        dto.setLastName(customer.getLastName());
+        dto.setCustomerCode(customer.getCustomerCode());
+
+        return dto;
     }
 }

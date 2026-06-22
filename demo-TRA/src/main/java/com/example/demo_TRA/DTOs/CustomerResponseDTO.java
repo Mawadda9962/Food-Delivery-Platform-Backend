@@ -18,6 +18,9 @@ public class CustomerResponseDTO {
 
 
     public static CustomerResponseDTO fromEntity(Customer customer){
+        if (customer == null){
+            return null;
+        }
         CustomerResponseDTO dto = new CustomerResponseDTO();
 
         customer.setFirstName(customer.getFirstName());
