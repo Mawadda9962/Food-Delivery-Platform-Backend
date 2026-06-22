@@ -1,7 +1,9 @@
 package com.example.demo_TRA.DTOs;
 
+import com.example.demo_TRA.Entities.Customer;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,7 +23,14 @@ public class CustomerRequestDTO {
 
     @NotBlank(message = "Phone number is required")
     private String phone;
+
     private Integer loyaltyPoints;
     private String customerCode;
+
+
+    public Customer toEntity(){
+        Customer customer = new Customer();
+
+    }
 
 }
