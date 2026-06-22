@@ -1,4 +1,4 @@
 package com.example.demo_TRA.Repositories;
 
-public class CustomerRepository {
+public interface CustomerRepository {
 }
