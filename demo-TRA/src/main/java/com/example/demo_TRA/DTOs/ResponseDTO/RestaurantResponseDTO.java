@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -35,7 +36,9 @@ public class RestaurantResponseDTO {
         return dto;
     }
 
-    public static List<RestaurantResponseDTO> fromEntity(List<Restaurant restaurants>){
+    public static List<RestaurantResponseDTO> fromEntity(List<Restaurant> restaurants){
+        List<RestaurantResponseDTO> dtos = new ArrayList<>();
+
 
     }
 
