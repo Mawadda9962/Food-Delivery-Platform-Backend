@@ -37,10 +37,12 @@ public class RestaurantResponseDTO {
     }
 
     public static List<RestaurantResponseDTO> fromEntity(List<Restaurant> restaurants){
-        List<RestaurantResponseDTO> dtos = new ArrayList<>();
-
-
+        List<RestaurantResponseDTO> dtos = new ArrayList<>(); //return type
+        if (restaurants != null){
+            for (Restaurant restaurant : restaurants){
+                dtos.add(fromEntity(restaurant));
+            }
+        }
+        return dtos;
     }
-
-
 }
