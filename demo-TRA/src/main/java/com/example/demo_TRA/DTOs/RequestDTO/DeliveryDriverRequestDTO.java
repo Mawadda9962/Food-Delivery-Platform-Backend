@@ -40,6 +40,12 @@ public class DeliveryDriverRequestDTO {
         return driver;
     }
 
-
-
+    public void applyTo(DeliveryDriver driver) { // For Updating
+        driver.setFirstName(firstName);
+        driver.setLastName(lastName);
+        driver.setEmail(email);
+        driver.setPhone(phone);
+        driver.setVehicleType(vehicleType);
+        driver.setOnline(isOnline);
+    }
 }
