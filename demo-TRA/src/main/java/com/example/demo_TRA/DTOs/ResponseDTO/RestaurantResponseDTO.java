@@ -14,7 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 public class RestaurantResponseDTO {
 
-    private Integer id;
     private String name;
     private String cuisineType;
     private Double deliveryFee;
@@ -27,7 +26,6 @@ public class RestaurantResponseDTO {
 
         RestaurantResponseDTO dto = new RestaurantResponseDTO();
 
-        dto.setId(restaurant.getId());
         dto.setName(restaurant.getName());
         dto.setCuisineType(restaurant.getCuisineType());
         dto.setDeliveryFee(restaurant.getDeliveryFee());
