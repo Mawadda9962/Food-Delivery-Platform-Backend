@@ -21,4 +21,6 @@ public class Payment extends BaseEntity {
 
     @OneToOne
     private Order order;
+
+
 }
