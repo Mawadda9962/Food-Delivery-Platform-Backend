@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,6 +35,16 @@ public class DeliveryDriverResponseDTO {
         dto.setOnline(driver.isOnline());
 
         return dto;
+    }
+
+    public static List<DeliveryDriverResponseDTO> fromEntity(List<DeliveryDriver> drivers) {
+        List<DeliveryDriverResponseDTO> dtos = new ArrayList<>();
+        if (drivers != null) {
+            for (DeliveryDriver driver : drivers) {
+                dtos.add(fromEntity(driver));
+            }
+        }
+        return dtos;
     }
 
 }
