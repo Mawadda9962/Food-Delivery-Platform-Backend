@@ -35,6 +35,8 @@ public class MenuItemRequestDTO {
         menuItem.setDescription(description);
         menuItem.setPrice(price);
         menuItem.setIsAvailable(isAvailable);
+        menuItem.setIsVegetarian(isVegetarian);
+        menuItem.setCalories(calories);
 
 
     }
