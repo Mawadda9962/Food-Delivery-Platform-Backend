@@ -26,8 +26,7 @@ public class OrderItemRequestDTO {
     private Long orderId;
     private Long corporateOrderId;
 
-    @NotNull(message = "Menu item ID is required")
-    private Long menuItemId;
+
 
     public OrderItem toEntity() { // For Creating
         OrderItem orderItem = new OrderItem();
