@@ -29,6 +29,13 @@ public class MenuItemRequestDTO {
     private Long restaurantId;
 
     public MenuItem toEntity(){
+        MenuItem menuItem = new MenuItem();
+
+        menuItem.setName(name);
+        menuItem.setDescription(description);
+        menuItem.setPrice(price);
+        menuItem.setIsAvailable(isAvailable);
+
 
     }
 
