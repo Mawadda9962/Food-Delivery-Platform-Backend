@@ -17,7 +17,11 @@ public class DeliveryDriverResponseDTO {
     private String lastName;
     private String email;
     private String phone;
+    private String driverCode;
     private String vehicleType;
+    private String vehiclePlate;
+    private String currentLate;
+    private String currentLng;
     private boolean isOnline;
 
     public static DeliveryDriverResponseDTO fromEntity(DeliveryDriver driver) {
@@ -31,7 +35,11 @@ public class DeliveryDriverResponseDTO {
         dto.setLastName(driver.getLastName());
         dto.setEmail(driver.getEmail());
         dto.setPhone(driver.getPhone());
+        dto.setDriverCode(driver.getDriverCode());
         dto.setVehicleType(driver.getVehicleType());
+        dto.setVehiclePlate(driver.getVehiclePlate());
+        dto.setCurrentLate(driver.getCurrentLate());
+        dto.setCurrentLng(driver.getCurrentLng());
         dto.setOnline(driver.isOnline());
 
         return dto;
@@ -46,5 +54,4 @@ public class DeliveryDriverResponseDTO {
         }
         return dtos;
     }
-
 }
