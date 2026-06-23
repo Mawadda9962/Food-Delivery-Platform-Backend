@@ -1,4 +1,4 @@
 package com.example.demo_TRA.DTOs.RequestDTO;
 
-public class DeliveryCriver {
+public class DeliveryDriverRequestDTO {
 }
