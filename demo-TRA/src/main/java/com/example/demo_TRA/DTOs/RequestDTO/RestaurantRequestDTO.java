@@ -1,4 +1,4 @@
-package com.example.demo_TRA.DTOs;
+package com.example.demo_TRA.DTOs.RequestDTO;
 
 import com.example.demo_TRA.Entities.Restaurant;
 import jakarta.validation.constraints.NotBlank;

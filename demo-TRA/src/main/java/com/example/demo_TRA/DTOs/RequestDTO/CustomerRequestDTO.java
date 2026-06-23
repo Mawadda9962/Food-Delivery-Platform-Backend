@@ -1,14 +1,10 @@
-package com.example.demo_TRA.DTOs;
+package com.example.demo_TRA.DTOs.RequestDTO;
 
 import com.example.demo_TRA.Entities.Customer;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @NoArgsConstructor

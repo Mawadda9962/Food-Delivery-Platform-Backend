@@ -1,4 +1,4 @@
-package com.example.demo_TRA.DTOs;
+package com.example.demo_TRA.DTOs.SummeryDTO;
 
 import com.example.demo_TRA.Entities.CustomerAddress;
 import lombok.AllArgsConstructor;
