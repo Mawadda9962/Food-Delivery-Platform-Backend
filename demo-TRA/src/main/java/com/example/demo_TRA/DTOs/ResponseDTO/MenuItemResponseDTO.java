@@ -12,6 +12,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MenuItemResponseDTO {
+
+    private String name;
+    private String description;
+    private Double price;
+    private Boolean isAvailable;
+    private Boolean isVegetarian;
+    private Integer calories;
+
+
     public static MenuItemResponseDTO fromEntity(MenuItem menuItem) {
         if (menuItem == null) {
             return null;
@@ -19,7 +28,6 @@ public class MenuItemResponseDTO {
 
         MenuItemResponseDTO dto = new MenuItemResponseDTO();
 
-        dto.setId(menuItem.getId());
         dto.setName(menuItem.getName());
         dto.setDescription(menuItem.getDescription());
         dto.setPrice(menuItem.getPrice());
