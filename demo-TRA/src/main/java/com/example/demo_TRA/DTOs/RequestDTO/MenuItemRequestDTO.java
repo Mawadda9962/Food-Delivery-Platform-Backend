@@ -46,9 +46,7 @@ public class MenuItemRequestDTO {
         menuItem.setDescription(description);
         menuItem.setPrice(price);
         menuItem.setIsAvailable(isAvailable);
-        menuItem
-
-
+        menuItem.setIsVegetarian(isVegetarian);
+        menuItem.setCalories(calories);
     }
-
 }
