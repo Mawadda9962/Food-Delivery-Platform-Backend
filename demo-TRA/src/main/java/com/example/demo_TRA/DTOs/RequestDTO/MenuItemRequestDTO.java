@@ -1,5 +1,9 @@
 package com.example.demo_TRA.DTOs.RequestDTO;
 
+import com.example.demo_TRA.Entities.MenuItem;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,5 +27,9 @@ public class MenuItemRequestDTO {
 
     @NotNull(message = "Restaurant ID is required")
     private Long restaurantId;
+
+    public MenuItem toEntity(){
+
+    }
 
 }
