@@ -45,6 +45,31 @@ public class CustomerService {
 
 
     public CustomerResponseDTO createCustomer(CustomerRequestDTO dto, CustomerAddressRequestDTO initialAddress){
+        List<Customer> existingCustomers = customerRepository.findByEmail(dto.getCustomerEmail());
+
+        if (!existingCustomers.isEmpty()){
+            throw new DuplicateResourceException("Customer with email " + dto.getCustomerEmail() + "already exists");
+        }
+
+        Customer customer = dto.toEntity();
+
+        customer.setCustomerCode(HelperUtils.generateCode("CUST"));
+        customer.setCreateDate(LocalDate.now());
+        customer.setUpdateDate(LocalDateTime.now());
+        customer.setIsActive(true);
+
+        Customer savedCustomer = customerRepository.save(customer);
+
+        CustomerAddress address = initialAddress.toEntity();
+        address.setCustomer(savedCustomer);
+        address.setIsDefault(true);
+        address.setCreateDate(LocalDate.now());
+        address.setUpdateDate(LocalDateTime.now());
+        address.setIsActive(true);
+
+        customerAddressRepository.save(address);
+
+        return CustomerResponseDTO.fromEntity(savedCustomer);
 
     }
 
