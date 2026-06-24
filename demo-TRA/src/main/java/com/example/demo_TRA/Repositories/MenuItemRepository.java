@@ -21,6 +21,6 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Integer> {
     @Query("SELECT m FROM MenuItem m " + "WHERE m.price BETWEEN :min AND :max AND m.isActive = true")
     List<MenuItem> findByPriceBetween(@Param("min") double min, @Param("max") double max);
 
-
-
+    @Query("SELECT m FROM MenuItem m WHERE m.id = :id AND m.isActive = true")
+    List<MenuItem> findActiveById(@Param("id") Integer id);
 }

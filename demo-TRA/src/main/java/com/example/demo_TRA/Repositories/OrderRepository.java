@@ -24,4 +24,7 @@ public interface OrderRepository extends JpaRepository<Order,Integer> {
     @Query("SELECT COALESCE(SUM(o.totalAmount), 0) FROM Order o " + "WHERE o.status = 'DELIVERED' AND o.orderDate = :date AND o.isActive = true")
     Double sumDeliveredRevenueForDate(@Param("date") LocalDate date);
 
+    @Query("SELECT o FROM Order o WHERE o.id = :id AND o.isActive = true")
+    List<Order> findActiveById(@Param("id") Integer id);
+
 }
