@@ -29,6 +29,9 @@ public class CorporateOrderRequestDTO {
     @NotNull(message = "Total amount is required")
     private Double totalAmount;
 
+    @NotNull(message = "Restaurant ID is required")
+    private Integer restaurantId;
+
     public CorporateOrder toEntity() { // For Creating
         CorporateOrder corporateOrder = new CorporateOrder();
 
