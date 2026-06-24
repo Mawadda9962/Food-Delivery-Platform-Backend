@@ -5,9 +5,12 @@ import com.example.demo_TRA.DTOs.ResponseDTO.CustomerResponseDTO;
 import com.example.demo_TRA.Entities.Customer;
 import com.example.demo_TRA.Exceptions.DuplicateResourceException;
 import com.example.demo_TRA.Repositories.CustomerRepository;
+import com.example.demo_TRA.Utils.HelperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -26,6 +29,11 @@ public class CustomerService {
         }
 
         Customer customer = dto.toEntity();
+        customer.setCustomerCode(HelperUtils.generateCode("CUST"));
+        customer.setCreateDate(LocalDate.now());
+        customer.setUpdateDate(LocalDateTime.now());
+
+
 
         Customer savedCustomer = customerRepository.save(customer);
         return CustomerResponseDTO.fromEntity(savedCustomer);
