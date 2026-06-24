@@ -22,7 +22,7 @@ public class DeliveryRequestDTO {
     private LocalDateTime deliveredAt;
 
     @NotNull(message = "Order ID is required")
-    private Long orderId;
+    private Integer orderId;
 
     public Delivery toEntity() { // For Creating
         Delivery delivery = new Delivery();

@@ -21,8 +21,8 @@ public class DeliveryDriver extends BaseEntity{
     private String driverCode;
     private String vehicleType;
     private String vehiclePlate;
-    private String currentLate;
-    private String currentLng;
+    private Double currentLat;
+    private Double currentLng;
     private boolean isOnline;
 
 

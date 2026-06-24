@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order,Integer> {
     @Query("SELECT o FROM Order o " + "WHERE o.customer.id = :customerId AND o.isActive = true")
@@ -25,6 +26,6 @@ public interface OrderRepository extends JpaRepository<Order,Integer> {
     Double sumDeliveredRevenueForDate(@Param("date") LocalDate date);
 
     @Query("SELECT o FROM Order o WHERE o.id = :id AND o.isActive = true")
-    List<Order> findActiveById(@Param("id") Integer id);
+    Optional<Order> findActiveById(@Param("id") Integer id);
 
 }
