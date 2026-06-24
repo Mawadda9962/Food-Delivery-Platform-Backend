@@ -31,7 +31,7 @@ public class DeliveryResponseDTO {
         dto.setStatus(delivery.getStatus());
         dto.setAssignedAt(delivery.getAssignedAt());
         dto.setPickedUpAt(delivery.getPickedUpAt());
-        delivery.setDeliveredAt(delivery.getDeliveredAt());
+        dto.setDeliveredAt(delivery.getDeliveredAt());
 
         return dto;
     }
