@@ -28,7 +28,7 @@ public class RestaurantService {
     @Autowired
     MenuItemRepository menuItemRepository;
 
-    //create Restaurant
+    //create a brand-new Restaurant
     public RestaurantResponseDTO createResponse(RestaurantRequestDTO dto, Integer ownerId){
         List<RestaurantOwner> owners = restaurantOwnerRepository.findActiveById(ownerId);
 
@@ -64,6 +64,7 @@ public class RestaurantService {
         return RestaurantResponseDTO.fromEntity(saved);
     }
 
+    //Updating deliveryFee
     public RestaurantResponseDTO updateDeliveryFee(Integer restaurantId, double newFee){
         List<Restaurant> result = restaurantRepository.findActiveById(restaurantId);
 
@@ -78,6 +79,20 @@ public class RestaurantService {
         Restaurant saved = restaurantRepository.save(restaurant);
         return RestaurantResponseDTO.fromEntity(saved);
     }
+
+    //get Restaurants By Cuisine
+    public List<RestaurantResponseDTO> getRestaurantsByCuisine(String cuisine){
+        List<Restaurant> restaurants = restaurantRepository.findByCuisineTypeIgnoreCase(cuisine);
+        return RestaurantResponseDTO.fromEntity(restaurants);
+    }
+
+    //getRestaurantsUnderDeliveryFee (show me restaurants that charge no more than this much for delivery)
+    public List<RestaurantResponseDTO> getRestaurantsUnderDeliveryFee(double maxFee){
+        List<Restaurant> restaurants = restaurantRepository.findByDeliveryFeeLessThanEqual(maxFee);
+
+    }
+
+
 
 
 
