@@ -94,6 +94,7 @@ public class RestaurantService {
         return RestaurantResponseDTO.fromEntity(restaurants);
     }
 
+    //get Menu For Restaurant
     public List<MenuItemResponseDTO> getMenuForRestaurant(Integer restaurantId){
         List<Restaurant> result = restaurantRepository.findActiveById(restaurantId);
 
@@ -102,10 +103,26 @@ public class RestaurantService {
         }
 
         List<MenuItem> menuItems = menuItemRepository.findByRestaurantId(restaurantId);
-        return MenuItemResponseDTO.fromEntity(menuItems)
+        return MenuItemResponseDTO.fromEntity(menuItems);
     }
 
+    //bulk Update Menu Item Prices
+    public List<MenuItemResponseDTO> bulkUpdateMenuItemPrices(Integer restaurantId, double percentageIncrease) {
+        List<Restaurant> result = restaurantRepository.findActiveById(restaurantId);
 
+        if (result.isEmpty()) {
+            throw new ResourceNotFoundException("Restaurant not found with id: " + restaurantId);
+        }
 
+        List<MenuItem> menuItems = menuItemRepository.findByRestaurantId(restaurantId);
 
+        for (MenuItem item : menuItems) {
+            double updatedPrice = item.getPrice() + (item.getPrice() * (percentageIncrease / 100));
+            item.setPrice(updatedPrice);
+            item.setUpdateDate(LocalDateTime.now());
+            menuItemRepository.save(item);
+        }
+
+        return MenuItemResponseDTO.fromEntity(menuItems);
+    }
 }
