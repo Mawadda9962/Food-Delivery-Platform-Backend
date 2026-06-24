@@ -1,7 +1,9 @@
 package com.example.demo_TRA.Services;
 
 import com.example.demo_TRA.DTOs.RequestDTO.RestaurantRequestDTO;
+import com.example.demo_TRA.DTOs.ResponseDTO.MenuItemResponseDTO;
 import com.example.demo_TRA.DTOs.ResponseDTO.RestaurantResponseDTO;
+import com.example.demo_TRA.Entities.MenuItem;
 import com.example.demo_TRA.Entities.Restaurant;
 import com.example.demo_TRA.Entities.RestaurantOwner;
 import com.example.demo_TRA.Exceptions.ResourceNotFoundException;
@@ -87,11 +89,21 @@ public class RestaurantService {
     }
 
     //getRestaurantsUnderDeliveryFee (show me restaurants that charge no more than this much for delivery)
-    public List<RestaurantResponseDTO> getRestaurantsUnderDeliveryFee(double maxFee){
+    public List<RestaurantResponseDTO> getRestaurantsUnderDeliveryFee(double maxFee) {
         List<Restaurant> restaurants = restaurantRepository.findByDeliveryFeeLessThanEqual(maxFee);
-
+        return RestaurantResponseDTO.fromEntity(restaurants);
     }
 
+    public List<MenuItemResponseDTO> getMenuForRestaurant(Integer restaurantId){
+        List<Restaurant> result = restaurantRepository.findActiveById(restaurantId);
+
+        if (result.isEmpty()){
+            throw new ResourceNotFoundException("Restaurant not found with id: " + restaurantId);
+        }
+
+        List<MenuItem> menuItems = menuItemRepository.findByRestaurantId(restaurantId);
+        return MenuItemResponseDTO.fromEntity(menuItems)
+    }
 
 
 
