@@ -140,10 +140,42 @@ public class OrderService {
 
            orderItemRepository.save(orderItem);
            return OrderResponseDTO.fromEntity(order);
-
-
-
        }
+
+       //Remove Menu Item From Order
+
+    public void removeMenuItemFromOrder(Integer orderId, Integer orderItemId) {
+        List<Order> orders = orderRepository.findActiveById(orderId);
+        if (orders.isEmpty()) {
+            throw new ResourceNotFoundException("Order not found with id: " + orderId);
+        }
+
+        List<OrderItem> orderItems = orderItemRepository.findActiveById(orderItemId);
+        if (orderItems.isEmpty()) {
+            throw new ResourceNotFoundException("Order item not found with id: " + orderItemId);
+        }
+
+        OrderItem orderItem = orderItems.get(0);
+        orderItem.setIsActive(false);
+        orderItem.setUpdateDate(LocalDateTime.now());
+        orderItemRepository.save(orderItem);
+    }
+
+    // apply Discount
+    public OrderResponseDTO applyDiscount(Integer orderId, double discountAmount) {
+        List<Order> orders = orderRepository.findActiveById(orderId);
+        if (orders.isEmpty()) {
+            throw new ResourceNotFoundException("Order not found with id: " + orderId);
+        }
+        Order order = orders.get(0);
+
+        order.setDiscountAmount(discountAmount);
+        order.setUpdateDate(LocalDateTime.now());
+
+        Order saved = orderRepository.save(order);
+        return OrderResponseDTO.fromEntity(saved);
+    }
+
 
 
    }
