@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 
 @Data
 @MappedSuperclass
+@NoArgsConstructor
+@AllArgsConstructor
 public class BaseEntity {
 
     @Id
