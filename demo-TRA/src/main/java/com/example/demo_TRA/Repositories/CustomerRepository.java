@@ -24,5 +24,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     @Query("SELECT c FROM Customer c WHERE c.id = :id AND c.isActive = true")
     List<Customer> findActiveById(@Param("id") Integer id);
 
-
+    @Query("SELECT c FROM Customer c WHERE c.isActive = true")
+    List<Customer> findAllActive();
 }
