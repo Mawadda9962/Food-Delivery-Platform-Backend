@@ -75,7 +75,6 @@ public class CustomerService {
     }
 
     //add Address
-
     public CustomerResponseDTO addAddress(Integer customerId, CustomerAddressRequestDTO address) {
         Customer customer = customerRepository.findActiveById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id: " + customerId));
@@ -90,6 +89,7 @@ public class CustomerService {
         return CustomerResponseDTO.fromEntity(customer);
     }
 
+    //updateLoyaltyPoints
     public CustomerResponseDTO updateLoyaltyPoints(Integer customerId, int points) {
         Customer customer = customerRepository.findActiveById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id: " + customerId));
@@ -101,11 +101,12 @@ public class CustomerService {
         return CustomerResponseDTO.fromEntity(saved);
     }
 
-    //applyLoyaltyPenalty
+    //apply Loyalty Penalty
     public CustomerResponseDTO applyLoyaltyPenalty(Integer customerId, int pointsDeducted) {
         Customer customer = customerRepository.findActiveById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id: " + customerId));
 
+        //Calculates what the new loyalty point total
         int newPoints = customer.getLoyaltyPoints() - pointsDeducted;
         customer.setLoyaltyPoints(Math.max(newPoints, 0));
         customer.setUpdateDate(LocalDateTime.now());
@@ -114,4 +115,13 @@ public class CustomerService {
         return CustomerResponseDTO.fromEntity(saved);
     }
 
+    //deactivate Customer(Soft Delete)
+    public void deactivateCustomer(Integer customerId) {
+        Customer customer = customerRepository.findActiveById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id: " + customerId));
+
+        customer.setIsActive(false);
+        customer.setUpdateDate(LocalDateTime.now());
+        customerRepository.save(customer);
+    }
 }

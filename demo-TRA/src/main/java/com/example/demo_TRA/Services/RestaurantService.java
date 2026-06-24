@@ -1,4 +1,49 @@
 package com.example.demo_TRA.Services;
 
+import com.example.demo_TRA.DTOs.RequestDTO.RestaurantRequestDTO;
+import com.example.demo_TRA.DTOs.ResponseDTO.RestaurantResponseDTO;
+import com.example.demo_TRA.Entities.Restaurant;
+import com.example.demo_TRA.Entities.RestaurantOwner;
+import com.example.demo_TRA.Exceptions.ResourceNotFoundException;
+import com.example.demo_TRA.Repositories.MenuItemRepository;
+import com.example.demo_TRA.Repositories.RestaurantOwnerRepository;
+import com.example.demo_TRA.Repositories.RestaurantRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
 public class RestaurantService {
+
+    @Autowired
+    RestaurantRepository restaurantRepository;
+
+    @Autowired
+    RestaurantOwnerRepository restaurantOwnerRepository;
+
+    @Autowired
+    MenuItemRepository menuItemRepository;
+
+    //create Restaurant
+    public RestaurantResponseDTO createResponse(RestaurantRequestDTO dto, Integer ownerId){
+        List<RestaurantOwner> owners = restaurantOwnerRepository.findActiveById(ownerId);
+
+        if (owners.isEmpty()) {
+            throw new ResourceNotFoundException("Restaurant owner not found with id: " + ownerId);
+        }
+
+        RestaurantOwner owner = owners.get(0);
+
+        Restaurant restaurant = dto.toEntity();
+        restaurant.setOwner(owner);
+        restaurant.setCreateDate(LocalDate.now());
+        restaurant.setUpdateDate(LocalDateTime.now());
+        restaurant.setIsActive(true);
+
+        Restaurant saved = restaurantRepository.save(restaurant);
+        return RestaurantResponseDTO.fromEntity(saved);
+    }
 }

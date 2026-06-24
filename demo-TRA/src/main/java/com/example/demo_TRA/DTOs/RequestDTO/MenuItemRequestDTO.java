@@ -26,7 +26,7 @@ public class MenuItemRequestDTO {
     private Integer calories;
 
     @NotNull(message = "Restaurant ID is required")
-    private Long restaurantId;
+    private Integer restaurantId;
 
     public MenuItem toEntity(){
         MenuItem menuItem = new MenuItem();
