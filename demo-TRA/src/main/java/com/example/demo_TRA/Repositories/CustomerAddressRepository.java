@@ -10,4 +10,7 @@ import java.util.List;
 public interface CustomerAddressRepository extends JpaRepository<CustomerAddress, Integer> {
     @Query("SELECT ca FROM CustomerAddress ca " + "WHERE ca.city = :city AND ca.isActive = true")
     List<CustomerAddress> findByCity(@Param("city") String city);
+
+    @Query("SELECT ca FROM CustomerAddress ca WHERE ca.customer.id = :customerId AND ca.isActive = true")
+    List<CustomerAddress> findByCustomerId(@Param("customerId") Integer customerId);
 }

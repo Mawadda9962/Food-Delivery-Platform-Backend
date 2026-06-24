@@ -6,6 +6,7 @@ import com.example.demo_TRA.DTOs.ResponseDTO.CustomerResponseDTO;
 import com.example.demo_TRA.Entities.Customer;
 import com.example.demo_TRA.Entities.CustomerAddress;
 import com.example.demo_TRA.Exceptions.DuplicateResourceException;
+import com.example.demo_TRA.Exceptions.ResourceNotFoundException;
 import com.example.demo_TRA.Repositories.CustomerAddressRepository;
 import com.example.demo_TRA.Repositories.CustomerRepository;
 import com.example.demo_TRA.Utils.HelperUtils;
@@ -75,7 +76,42 @@ public class CustomerService {
 
     //add Address
 
-    public CustomerResponseDTO addAddress(Integer customerId, CustomerAddressRequestDTO address ){
+    public CustomerResponseDTO addAddress(Integer customerId, CustomerAddressRequestDTO address) {
+        Customer customer = customerRepository.findActiveById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id: " + customerId));
 
+        CustomerAddress newAddress = address.toEntity();
+        newAddress.setCustomer(customer);
+        newAddress.setCreateDate(LocalDate.now());
+        newAddress.setUpdateDate(LocalDateTime.now());
+        newAddress.setIsActive(true);
+
+        customerAddressRepository.save(newAddress);
+        return CustomerResponseDTO.fromEntity(customer);
     }
+
+    public CustomerResponseDTO updateLoyaltyPoints(Integer customerId, int points) {
+        Customer customer = customerRepository.findActiveById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id: " + customerId));
+
+        customer.setLoyaltyPoints(customer.getLoyaltyPoints() + points);
+        customer.setUpdateDate(LocalDateTime.now());
+
+        Customer saved = customerRepository.save(customer);
+        return CustomerResponseDTO.fromEntity(saved);
+    }
+
+    //applyLoyaltyPenalty
+    public CustomerResponseDTO applyLoyaltyPenalty(Integer customerId, int pointsDeducted) {
+        Customer customer = customerRepository.findActiveById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id: " + customerId));
+
+        int newPoints = customer.getLoyaltyPoints() - pointsDeducted;
+        customer.setLoyaltyPoints(Math.max(newPoints, 0));
+        customer.setUpdateDate(LocalDateTime.now());
+
+        Customer saved = customerRepository.save(customer);
+        return CustomerResponseDTO.fromEntity(saved);
+    }
+
 }

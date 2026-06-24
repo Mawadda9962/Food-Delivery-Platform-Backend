@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
@@ -22,7 +23,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
     //deactivate Customer by id
     @Query("SELECT c FROM Customer c WHERE c.id = :id AND c.isActive = true")
-    List<Customer> findActiveById(@Param("id") Integer id);
+    Optional<Customer> findActiveById(@Param("id") Integer id);
 
     @Query("SELECT c FROM Customer c WHERE c.isActive = true")
     List<Customer> findAllActive();
