@@ -18,7 +18,7 @@ public class CustomerService {
 
 
     //Create Customer
-    public CustomerResponseDTO customerResponseDTO(CustomerRequestDTO dto){
+    public CustomerResponseDTO createCustomer(CustomerRequestDTO dto){
         List<Customer> existingCustomers  = customerRepository.findByEmail(dto.getCustomerEmail());
 
         if (!existingCustomers.isEmpty()){

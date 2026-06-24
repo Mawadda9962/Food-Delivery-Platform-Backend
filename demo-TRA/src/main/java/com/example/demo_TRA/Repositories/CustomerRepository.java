@@ -19,4 +19,10 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
     @Query("SELECT c FROM Customer c WHERE c.createDate BETWEEN :start AND :end AND c.isActive = true")
     List<Customer> findCustomersRegisteredBetween(@Param("start") LocalDate start, @Param("end") LocalDate end);
+
+    //deactivate Customer by id
+    @Query("SELECT c FROM Customer c WHERE c.id = :id AND c.isActive = true")
+    List<Customer> findActiveById(@Param("id") Integer id);
+
+
 }
