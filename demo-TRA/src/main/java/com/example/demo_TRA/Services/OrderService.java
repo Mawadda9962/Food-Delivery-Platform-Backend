@@ -120,6 +120,29 @@ public class OrderService {
 
            Order order = orders.get(0);
 
+           List<MenuItem> menuItems = menuItemRepository.findActiveById(menuItemId);
+           if (menuItems.isEmpty()) {
+               throw new ResourceNotFoundException("Menu item not found with id: " + menuItemId);
+           }
+           MenuItem menuItem = menuItems.get(0);
+
+           double itemTotal = menuItem.getPrice() * quantity;
+
+           OrderItem orderItem = new OrderItem();
+           orderItem.setOrder(order);
+           orderItem.setMenuItem(menuItem);
+           orderItem.setQuantity(quantity);
+           orderItem.setUnitPrice(menuItem.getPrice());
+           orderItem.setTotalPrice(itemTotal);
+           orderItem.setCreateDate(LocalDate.now());
+           orderItem.setUpdateDate(LocalDateTime.now());
+           orderItem.setIsActive(true);
+
+           orderItemRepository.save(orderItem);
+           return OrderResponseDTO.fromEntity(order);
+
+
+
        }
 
 
