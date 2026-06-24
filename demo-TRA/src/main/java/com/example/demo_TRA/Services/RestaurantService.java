@@ -8,6 +8,7 @@ import com.example.demo_TRA.Exceptions.ResourceNotFoundException;
 import com.example.demo_TRA.Repositories.MenuItemRepository;
 import com.example.demo_TRA.Repositories.RestaurantOwnerRepository;
 import com.example.demo_TRA.Repositories.RestaurantRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +47,8 @@ public class RestaurantService {
         Restaurant saved = restaurantRepository.save(restaurant);
         return RestaurantResponseDTO.fromEntity(saved);
     }
+
+    //Toggle Accepting Orders
     public RestaurantResponseDTO toggleAcceptingOrders(Integer restaurantId, boolean status) {
         List<Restaurant> result = restaurantRepository.findActiveById(restaurantId);
 
@@ -60,5 +63,22 @@ public class RestaurantService {
         Restaurant saved = restaurantRepository.save(restaurant);
         return RestaurantResponseDTO.fromEntity(saved);
     }
+
+    public RestaurantResponseDTO updateDeliveryFee(Integer restaurantId, double newFee){
+        List<Restaurant> result = restaurantRepository.findActiveById(restaurantId);
+
+        if (result.isEmpty()){
+            throw new ResourceNotFoundException("Restaurant not found with id: " + restaurantId);
+        }
+
+        Restaurant restaurant = result.get(0);
+        restaurant.setDeliveryFee(newFee);
+        restaurant.setUpdateDate(LocalDateTime.now());
+
+        Restaurant saved = restaurantRepository.save(restaurant);
+        return RestaurantResponseDTO.fromEntity(saved);
+    }
+
+
 
 }
