@@ -12,7 +12,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant,Integer> 
     @Query("SELECT r FROM Restaurant r " + "WHERE LOWER(r.cuisineType) = LOWER(:cuisineType) AND r.isActive = true")
     List<Restaurant> findByCuisineTypeIgnoreCase(@Param("cuisineType") String cuisineType);
 
-
     @Query("SELECT r FROM Restaurant r " + "WHERE r.acceptingOrders = true AND r.isActive = true")
     List<Restaurant> findByAcceptingOrdersTrue();
 

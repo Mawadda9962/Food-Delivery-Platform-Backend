@@ -46,4 +46,19 @@ public class RestaurantService {
         Restaurant saved = restaurantRepository.save(restaurant);
         return RestaurantResponseDTO.fromEntity(saved);
     }
+    public RestaurantResponseDTO toggleAcceptingOrders(Integer restaurantId, boolean status) {
+        List<Restaurant> result = restaurantRepository.findActiveById(restaurantId);
+
+        if (result.isEmpty()) {
+            throw new ResourceNotFoundException("Restaurant not found with id: " + restaurantId);
+        }
+
+        Restaurant restaurant = result.get(0);
+        restaurant.setAcceptingOrders(status);
+        restaurant.setUpdateDate(LocalDateTime.now());
+
+        Restaurant saved = restaurantRepository.save(restaurant);
+        return RestaurantResponseDTO.fromEntity(saved);
+    }
+
 }
