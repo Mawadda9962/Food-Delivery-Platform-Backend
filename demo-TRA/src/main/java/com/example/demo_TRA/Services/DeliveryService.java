@@ -144,6 +144,16 @@ public class DeliveryService {
         return DeliveryResponseDTO.fromEntity(deliveries);
     }
 
-    //Changes the driver's availability
+    // Toggle Driver Online Status (Changes the driver's availability)
+    public void toggleDriverOnlineStatus(Integer driverId, boolean isOnline) {
+
+        DeliveryDriver driver = deliveryDriverRepository.findActiveById(driverId).orElseThrow(() -> new ResourceNotFoundException(
+                        "Driver not found with ID: " + driverId));
+
+        driver.setOnline(isOnline);
+        driver.setUpdateDate(LocalDateTime.now());
+
+        deliveryDriverRepository.save(driver);
+    }
 }
 
