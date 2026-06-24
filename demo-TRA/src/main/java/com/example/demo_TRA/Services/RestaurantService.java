@@ -122,7 +122,6 @@ public class RestaurantService {
             item.setUpdateDate(LocalDateTime.now());
             menuItemRepository.save(item);
         }
-
         return MenuItemResponseDTO.fromEntity(menuItems);
     }
 }
