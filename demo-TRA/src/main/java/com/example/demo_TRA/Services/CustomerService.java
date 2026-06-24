@@ -1,9 +1,12 @@
 package com.example.demo_TRA.Services;
 
+import com.example.demo_TRA.DTOs.RequestDTO.CustomerAddressRequestDTO;
 import com.example.demo_TRA.DTOs.RequestDTO.CustomerRequestDTO;
 import com.example.demo_TRA.DTOs.ResponseDTO.CustomerResponseDTO;
 import com.example.demo_TRA.Entities.Customer;
+import com.example.demo_TRA.Entities.CustomerAddress;
 import com.example.demo_TRA.Exceptions.DuplicateResourceException;
+import com.example.demo_TRA.Repositories.CustomerAddressRepository;
 import com.example.demo_TRA.Repositories.CustomerRepository;
 import com.example.demo_TRA.Utils.HelperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,9 @@ public class CustomerService {
     @Autowired
     CustomerRepository customerRepository;
 
+    @Autowired
+    CustomerAddressRepository customerAddressRepository;
+
 
     //Create Customer
     public CustomerResponseDTO createCustomer(CustomerRequestDTO dto){
@@ -33,9 +39,14 @@ public class CustomerService {
         customer.setCreateDate(LocalDate.now());
         customer.setUpdateDate(LocalDateTime.now());
 
-
-
         Customer savedCustomer = customerRepository.save(customer);
         return CustomerResponseDTO.fromEntity(savedCustomer);
     }
+
+
+    public CustomerResponseDTO createCustomer(CustomerRequestDTO dto, CustomerAddressRequestDTO initialAddress){
+
+    }
+
+
 }
