@@ -56,6 +56,26 @@ public class PaymentService {
     }
 
     //refund Payment
+    public PaymentResponseDTO refundPayment(Integer orderId) {
+        Payment payment = paymentRepository.findActivePaymentByOrderId(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Active payment record not found for Order id: " + orderId));
 
+        if ("REFUNDED".equalsIgnoreCase(payment.getStatus())) {
+            throw new InvalidOrderStateException("This payment has already been refunded.");
+        }
+
+        payment.setStatus("REFUNDED");
+        payment.setUpdateDate(LocalDateTime.now());
+        Payment updatedPayment = paymentRepository.save(payment);
+
+        Order order = payment.getOrder();
+        if (order != null && order.getIsActive()) {
+            order.setStatus("REFUNDED");
+            order.setUpdateDate(LocalDateTime.now());
+            orderRepository.save(order);
+        }
+
+        return PaymentResponseDTO.fromEntity(updatedPayment);
+    }
 
 }

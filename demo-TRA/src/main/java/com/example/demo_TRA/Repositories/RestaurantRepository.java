@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant,Integer> {
 
@@ -25,7 +26,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant,Integer> 
     List<Restaurant> searchByNameKeyword(@Param("keyword") String keyword);
 
     @Query("SELECT r FROM Restaurant r WHERE r.id = :id AND r.isActive = true")
-    List<Restaurant> findActiveById(@Param("id") Integer id);
+    Optional<Restaurant> findActiveById(@Param("id") Integer id);
 
 
 }
