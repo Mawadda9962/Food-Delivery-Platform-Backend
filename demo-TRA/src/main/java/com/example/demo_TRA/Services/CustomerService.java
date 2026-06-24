@@ -16,13 +16,20 @@ public class CustomerService {
     @Autowired
     CustomerRepository customerRepository;
 
+
+    //Create Customer
     public CustomerResponseDTO customerResponseDTO(CustomerRequestDTO dto){
         List<Customer> existingCustomers  = customerRepository.findByEmail(dto.getCustomerEmail());
 
         if (!existingCustomers.isEmpty()){
             throw new DuplicateResourceException("Customer with email" + dto.getCustomerEmail() + "already exists");
         }
+        Customer customer = dto.toEntity();
 
-
+        if (customer.getLoyaltyPoints() == null){
+            customer.setLoyaltyPoints(0);
+        }
+        Customer savedCustomer = customerRepository.save(customer);
+        return CustomerResponseDTO.fromEntity(savedCustomer);
     }
 }
