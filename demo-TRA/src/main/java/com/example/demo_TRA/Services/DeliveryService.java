@@ -1,5 +1,7 @@
 package com.example.demo_TRA.Services;
 
+import com.example.demo_TRA.DTOs.RequestDTO.DeliveryDriverRequestDTO;
+import com.example.demo_TRA.DTOs.ResponseDTO.DeliveryDriverResponseDTO;
 import com.example.demo_TRA.DTOs.ResponseDTO.DeliveryResponseDTO;
 import com.example.demo_TRA.Entities.Delivery;
 import com.example.demo_TRA.Entities.DeliveryDriver;
@@ -93,7 +95,8 @@ public class DeliveryService {
     //update Driver Location
     public void updateDriverLocation(Integer driverId, double lat, double lng) {
 
-        DeliveryDriver driver = deliveryDriverRepository.findActiveById(driverId).orElseThrow(() -> new ResourceNotFoundException(
+        DeliveryDriver driver = deliveryDriverRepository.findActiveById(driverId)
+                        .orElseThrow(() -> new ResourceNotFoundException(
                         "Driver not found with ID: " + driverId));
 
         driver.setCurrentLat(lat);
@@ -155,5 +158,44 @@ public class DeliveryService {
 
         deliveryDriverRepository.save(driver);
     }
+
+    //Register new Driver
+    public DeliveryDriverResponseDTO registerDriver(DeliveryDriverRequestDTO dto){
+
+        DeliveryDriver driver = dto.toEntity();
+        driver.setDriverCode(HelperUtils.generateCode("DRV"));
+        driver.setOnline(false);
+        driver.setIsActive(true);
+        driver.setCreateDate(LocalDate.now());
+        driver.setUpdateDate(LocalDateTime.now());
+
+        DeliveryDriver saved = deliveryDriverRepository.save(driver);
+        return DeliveryDriverResponseDTO.fromEntity(saved);
+    }
+
+    //Get All Drivers
+    public List<DeliveryDriverResponseDTO> getAllDrivers() {
+        List<DeliveryDriver> drivers = deliveryDriverRepository.findAllActiveDrivers();
+        return DeliveryDriverResponseDTO.fromEntity(drivers);
+    }
+
+    //Get Online Drivers
+    public List<DeliveryDriverResponseDTO> getOnlineDrivers() {
+        List<DeliveryDriver> drivers = deliveryDriverRepository.findOnlineDrivers();
+        return DeliveryDriverResponseDTO.fromEntity(drivers);
+    }
+
+    //Get Driver's Active Delivery
+    public DeliveryResponseDTO getActiveDeliveryForDriver(Integer driverId) {
+
+        deliveryDriverRepository.findActiveById(driverId).orElseThrow(() -> new ResourceNotFoundException(
+                        "Driver not found with ID: " + driverId));
+
+        Delivery delivery = deliveryRepository.findActiveDeliveryByDriverId(driverId).orElseThrow(() -> new ResourceNotFoundException(
+                        "No active delivery found for driver ID: " + driverId));
+
+        return DeliveryResponseDTO.fromEntity(delivery);
+    }
+
 }
 

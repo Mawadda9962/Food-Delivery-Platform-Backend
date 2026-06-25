@@ -20,8 +20,8 @@ public class DeliveryDriverResponseDTO {
     private String driverCode;
     private String vehicleType;
     private String vehiclePlate;
-    private String currentLate;
-    private String currentLng;
+    private Double currentLat;
+    private Double currentLng;
     private boolean isOnline;
 
     public static DeliveryDriverResponseDTO fromEntity(DeliveryDriver driver) {
@@ -38,7 +38,7 @@ public class DeliveryDriverResponseDTO {
         dto.setDriverCode(driver.getDriverCode());
         dto.setVehicleType(driver.getVehicleType());
         dto.setVehiclePlate(driver.getVehiclePlate());
-        dto.setCurrentLate(driver.getCurrentLate());
+        dto.setCurrentLat(driver.getCurrentLat());
         dto.setCurrentLng(driver.getCurrentLng());
         dto.setOnline(driver.isOnline());
 

@@ -34,8 +34,8 @@ public class DeliveryDriverRequestDTO {
     @NotBlank(message = "Vehicle plate number is required")
     private String vehiclePlate;
 
-    private String currentLate;
-    private String currentLng;
+    private Double currentLat;
+    private Double currentLng;
     private boolean isOnline;
 
     public DeliveryDriver toEntity() { // For Creating
@@ -49,9 +49,9 @@ public class DeliveryDriverRequestDTO {
         driver.setDriverCode(driverCode);
         driver.setVehicleType(vehicleType);
         driver.setVehiclePlate(vehiclePlate);
-        driver.setCurrentLate(currentLate);
+        driver.setCurrentLat(currentLat);
         driver.setCurrentLng(currentLng);
-        driver.setOnline(isOnline);
+        driver.setOnline(false);
 
         return driver;
     }
@@ -65,7 +65,7 @@ public class DeliveryDriverRequestDTO {
         driver.setDriverCode(driverCode);
         driver.setVehicleType(vehicleType);
         driver.setVehiclePlate(vehiclePlate);
-        driver.setCurrentLate(currentLate);
+        driver.setCurrentLat(currentLat);
         driver.setCurrentLng(currentLng);
         driver.setOnline(isOnline);
     }

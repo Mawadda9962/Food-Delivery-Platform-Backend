@@ -155,6 +155,7 @@ public class CustomerService {
         return CustomerResponseDTO.fromEntity(customers);
     }
 
+    //Taking the address by default
     public CustomerAddressResponseDTO setDefaultAddress(Integer addressId) {
 
         CustomerAddress address = customerAddressRepository.findActiveById(addressId)
@@ -167,14 +168,12 @@ public class CustomerService {
         for (CustomerAddress addr : addresses) {
             addr.setIsDefault(false);customerAddressRepository.save(addr);
         }
-
         address.setIsDefault(true);
         address.setUpdateDate(LocalDateTime.now());
 
         CustomerAddress saved = customerAddressRepository.save(address);
         return CustomerAddressResponseDTO.fromEntity(saved);
     }
-
 
     //get Customer Address
     public List<CustomerAddressResponseDTO> getCustomerAddresses(

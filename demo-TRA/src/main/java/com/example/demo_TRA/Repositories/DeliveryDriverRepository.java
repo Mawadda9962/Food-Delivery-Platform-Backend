@@ -15,7 +15,9 @@ public interface DeliveryDriverRepository extends JpaRepository<DeliveryDriver,I
     @Query("SELECT dd FROM DeliveryDriver dd WHERE dd.id = :id AND dd.isActive = true")
     Optional<DeliveryDriver> findActiveById(@Param("id") Integer id);
 
-    @Query("SELECT dd FROM DeliveryDriver dd WHERE dd.id = :id AND dd.isActive = true")
+    @Query("SELECT dd FROM DeliveryDriver dd WHERE dd.isOnline = true AND dd.isActive = true")
     List<DeliveryDriver> findOnlineDrivers();
 
+    @Query("SELECT dd FROM DeliveryDriver dd WHERE dd.isActive = true")
+    List<DeliveryDriver> findAllActiveDrivers();
 }
