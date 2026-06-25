@@ -133,6 +133,9 @@ public class CustomerService {
 
     //Get Customer By Id
     public CustomerResponseDTO getCustomerById(Integer customerId){
+        Customer customer = customerRepository.findActiveById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerId));
 
+        return CustomerResponseDTO.fromEntity(customer);
     }
 }
