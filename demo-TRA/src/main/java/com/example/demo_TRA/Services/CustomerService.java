@@ -155,6 +155,27 @@ public class CustomerService {
         return CustomerResponseDTO.fromEntity(customers);
     }
 
+    public CustomerAddressResponseDTO setDefaultAddress(Integer addressId) {
+
+        CustomerAddress address = customerAddressRepository.findActiveById(addressId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Address not found with id: " + addressId));
+
+        Integer customerId = address.getCustomer().getId();
+
+        List<CustomerAddress> addresses = customerAddressRepository.findByCustomerId(customerId);
+
+        for (CustomerAddress addr : addresses) {
+            addr.setIsDefault(false);customerAddressRepository.save(addr);
+        }
+
+        address.setIsDefault(true);
+        address.setUpdateDate(LocalDateTime.now());
+
+        CustomerAddress saved = customerAddressRepository.save(address);
+        return CustomerAddressResponseDTO.fromEntity(saved);
+    }
+
+
     //get Customer Address
     public List<CustomerAddressResponseDTO> getCustomerAddresses(
             Integer customerId) {
@@ -181,6 +202,7 @@ public class CustomerService {
 
         customerAddressRepository.save(address);
     }
+
 
     public List<OrderResponseDTO> getCustomerOrders(Integer customerId) {
 
