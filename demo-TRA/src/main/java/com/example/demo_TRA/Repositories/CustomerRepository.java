@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
     @Query("SELECT c FROM Customer c WHERE c.customerEmail = :email AND c.isActive = true")
-    List<Customer> findByEmail(@Param("email") String email);
+    Optional<Customer> findByEmail(@Param("email") String email);
 
     @Query("SELECT c FROM Customer c " + "WHERE c.loyaltyPoints >= :points AND c.isActive = true")
     List<Customer> findByLoyaltyPointsGreaterThanEqual(@Param("points") int points);
@@ -25,8 +25,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     @Query("SELECT c FROM Customer c WHERE c.id = :id AND c.isActive = true")
     Optional<Customer> findActiveById(@Param("id") Integer id);
 
-    @Query("SELECT a FROM Customer a WHERE a.id = :id AND a.isActive = true")
+    @Query("SELECT c FROM Customer c WHERE c.isActive = true")
     List<Customer> findAllActiveCustomers();
-
-
 }

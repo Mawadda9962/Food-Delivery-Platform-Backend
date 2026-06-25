@@ -2,20 +2,25 @@ package com.example.demo_TRA.Services;
 
 import com.example.demo_TRA.DTOs.RequestDTO.CustomerAddressRequestDTO;
 import com.example.demo_TRA.DTOs.RequestDTO.CustomerRequestDTO;
+import com.example.demo_TRA.DTOs.ResponseDTO.CustomerAddressResponseDTO;
 import com.example.demo_TRA.DTOs.ResponseDTO.CustomerResponseDTO;
+import com.example.demo_TRA.DTOs.ResponseDTO.OrderResponseDTO;
 import com.example.demo_TRA.Entities.Customer;
 import com.example.demo_TRA.Entities.CustomerAddress;
 import com.example.demo_TRA.Exceptions.DuplicateResourceException;
 import com.example.demo_TRA.Exceptions.ResourceNotFoundException;
 import com.example.demo_TRA.Repositories.CustomerAddressRepository;
 import com.example.demo_TRA.Repositories.CustomerRepository;
+import com.example.demo_TRA.Repositories.OrderRepository;
 import com.example.demo_TRA.Utils.HelperUtils;
+import com.example.demo_TRA.Entities.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -26,10 +31,13 @@ public class CustomerService {
     @Autowired
     CustomerAddressRepository customerAddressRepository;
 
+    @Autowired
+    OrderRepository orderRepository;
+
 
     //Create Customer
     public CustomerResponseDTO createCustomer(CustomerRequestDTO dto){
-        List<Customer> existingCustomers  = customerRepository.findByEmail(dto.getCustomerEmail());
+        Optional<Customer> existingCustomers  = customerRepository.findByEmail(dto.getCustomerEmail());
 
         if (!existingCustomers.isEmpty()){
             throw new DuplicateResourceException("Customer with email" + dto.getCustomerEmail() + "already exists");
@@ -46,7 +54,7 @@ public class CustomerService {
 
 
     public CustomerResponseDTO createCustomer(CustomerRequestDTO dto, CustomerAddressRequestDTO initialAddress){
-        List<Customer> existingCustomers = customerRepository.findByEmail(dto.getCustomerEmail());
+        Optional<Customer> existingCustomers = customerRepository.findByEmail(dto.getCustomerEmail());
 
         if (!existingCustomers.isEmpty()){
             throw new DuplicateResourceException("Customer with email " + dto.getCustomerEmail() + "already exists");
@@ -131,11 +139,57 @@ public class CustomerService {
         return CustomerResponseDTO.fromEntity(customers);
     }
 
-    //Get Customer By Id
+    //Get Customer ById
     public CustomerResponseDTO getCustomerById(Integer customerId){
         Customer customer = customerRepository.findActiveById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerId));
 
         return CustomerResponseDTO.fromEntity(customer);
     }
+
+    //Get Customer By Email
+    public CustomerResponseDTO getCustomerByEmail(String email){
+        Customer customers  = customerRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with email: " + email));
+
+        return CustomerResponseDTO.fromEntity(customers);
+    }
+
+    //get Customer Address
+    public List<CustomerAddressResponseDTO> getCustomerAddresses(
+            Integer customerId) {
+
+        customerRepository.findActiveById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Customer not found with ID: " + customerId));
+
+        List<CustomerAddress> addresses =
+                customerAddressRepository.findByCustomerId(customerId);
+
+        return CustomerAddressResponseDTO.fromEntity(addresses);
+    }
+
+    public void deleteAddress(Integer addressId) {
+
+        CustomerAddress address =
+                customerAddressRepository.findActiveById(addressId)
+                        .orElseThrow(() -> new ResourceNotFoundException(
+                                "Address not found with ID: " + addressId));
+
+        address.setIsActive(false);
+        address.setUpdateDate(LocalDateTime.now());
+
+        customerAddressRepository.save(address);
+    }
+
+    public List<OrderResponseDTO> getCustomerOrders(Integer customerId) {
+
+        customerRepository.findActiveById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                                "Customer not found with ID: " + customerId));
+
+        List<Order> orders = orderRepository.findByCustomerId(customerId);
+        return OrderResponseDTO.fromEntity(orders);
+    }
+
 }
