@@ -1,12 +1,17 @@
 package com.example.demo_TRA.Services;
 
+import com.example.demo_TRA.DTOs.RequestDTO.ComboMealRequestDTO;
+import com.example.demo_TRA.DTOs.RequestDTO.MenuItemRequestDTO;
 import com.example.demo_TRA.DTOs.RequestDTO.RestaurantRequestDTO;
+import com.example.demo_TRA.DTOs.ResponseDTO.ComboMealResponseDTO;
 import com.example.demo_TRA.DTOs.ResponseDTO.MenuItemResponseDTO;
 import com.example.demo_TRA.DTOs.ResponseDTO.RestaurantResponseDTO;
+import com.example.demo_TRA.Entities.ComboMeal;
 import com.example.demo_TRA.Entities.MenuItem;
 import com.example.demo_TRA.Entities.Restaurant;
 import com.example.demo_TRA.Entities.RestaurantOwner;
 import com.example.demo_TRA.Exceptions.ResourceNotFoundException;
+import com.example.demo_TRA.Repositories.ComboMealRepository;
 import com.example.demo_TRA.Repositories.MenuItemRepository;
 import com.example.demo_TRA.Repositories.RestaurantOwnerRepository;
 import com.example.demo_TRA.Repositories.RestaurantRepository;
@@ -29,6 +34,9 @@ public class RestaurantService {
 
     @Autowired
     MenuItemRepository menuItemRepository;
+
+    @Autowired
+    ComboMealRepository comboMealRepository;
 
     //create a brand-new Restaurant
     public RestaurantResponseDTO createResponse(RestaurantRequestDTO dto, Integer ownerId){
@@ -126,4 +134,54 @@ public class RestaurantService {
         return RestaurantResponseDTO.fromEntity(restaurant);
     }
 
+    //Add new Item to Restaurant
+    public MenuItemResponseDTO addMenuItem(Integer restaurantId, MenuItemRequestDTO dto){
+        Restaurant restaurant = restaurantRepository.findActiveById(restaurantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id: " + restaurantId));
+
+        MenuItem menuItem = dto.toEntity();
+        menuItem.setRestaurant(restaurant);
+        menuItem.setIsActive(true);
+        menuItem.setCreateDate(LocalDate.now());
+        menuItem.setUpdateDate(LocalDateTime.now());
+
+        MenuItem saved = menuItemRepository.save(menuItem);
+        return MenuItemResponseDTO.fromEntity(saved);
+    }
+
+    //Mark MenuItem Available (Out of Stock)
+    public MenuItemResponseDTO setMenuItemAvailability(Integer itemId, boolean status) {
+        MenuItem menuItem = menuItemRepository.findActiveById(itemId)
+                .orElseThrow(() -> new ResourceNotFoundException("Menu item not found with id: " + itemId));
+
+        menuItem.setIsAvailable(status);
+        menuItem.setUpdateDate(LocalDateTime.now());
+
+        MenuItem saved = menuItemRepository.save(menuItem);
+        return MenuItemResponseDTO.fromEntity(saved);
+    }
+
+    //Get All ComboMeal for Restaurant
+    public List<ComboMealResponseDTO> getCombosForRestaurant(Integer restaurantId) {
+        restaurantRepository.findActiveById(restaurantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id: " + restaurantId));
+
+        List<ComboMeal> comboMeals = comboMealRepository.findByRestaurantId(restaurantId);
+        return ComboMealResponseDTO.fromEntity(comboMeals);
+    }
+
+    //Create a new ComboMeal
+    public ComboMealResponseDTO createComboMeal(Integer restaurantId, ComboMealRequestDTO dto) {
+        Restaurant restaurant = restaurantRepository.findActiveById(restaurantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id: " + restaurantId));
+
+        ComboMeal comboMeal = dto.toEntity();
+        comboMeal.setRestaurant(restaurant);
+        comboMeal.setIsActive(true);
+        comboMeal.setCreateDate(LocalDate.now());
+        comboMeal.setUpdateDate(LocalDateTime.now());
+
+        ComboMeal saved = comboMealRepository.save(comboMeal);
+        return ComboMealResponseDTO.fromEntity(saved);
+    }
 }

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MenuItemRepository extends JpaRepository<MenuItem, Integer> {
 
@@ -22,5 +23,5 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Integer> {
     List<MenuItem> findByPriceBetween(@Param("min") double min, @Param("max") double max);
 
     @Query("SELECT m FROM MenuItem m WHERE m.id = :id AND m.isActive = true")
-    List<MenuItem> findActiveById(@Param("id") Integer id);
+    Optional<MenuItem> findActiveById(@Param("id") Integer id);
 }

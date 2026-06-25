@@ -23,7 +23,7 @@ public class ComboMealRequestDTO {
     private Boolean isAvailable;
 
     @NotNull(message = "Restaurant ID is required")
-    private Long restaurantId;
+    private Integer restaurantId;
 
     public ComboMeal toEntity() { // For Creating
         ComboMeal comboMeal = new ComboMeal();
