@@ -77,12 +77,8 @@ public class OrderService {
 
         if (items != null) {
             for (OrderItemRequestDTO itemDto : items) {
-                List<MenuItem> menuItems = menuItemRepository.findActiveById(itemDto.getMenuItemId());
-                if (menuItems.isEmpty()) {
-                    throw new ResourceNotFoundException("Menu item not found while creating order");
-                }
-
-                MenuItem menuItem = menuItems.get(0);
+                MenuItem menuItem = menuItemRepository.findActiveById(itemDto.getMenuItemId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Menu item not found while creating order"));
 
                 double itemTotal = menuItem.getPrice() * itemDto.getQuantity();
 
@@ -123,11 +119,8 @@ public class OrderService {
 
         Order order = orders.get();
 
-        List<MenuItem> menuItems = menuItemRepository.findActiveById(menuItemId);
-        if (menuItems.isEmpty()) {
-            throw new ResourceNotFoundException("Menu item not found with id: " + menuItemId);
-        }
-        MenuItem menuItem = menuItems.get(0);
+        MenuItem menuItem = menuItemRepository.findActiveById(menuItemId)
+                .orElseThrow(() -> new ResourceNotFoundException("Menu item not found with id: " + menuItemId));
 
         double itemTotal = menuItem.getPrice() * quantity;
 
