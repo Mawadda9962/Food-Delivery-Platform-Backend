@@ -118,4 +118,12 @@ public class RestaurantService {
         return RestaurantResponseDTO.fromEntity(restaurants);
     }
 
+    //Get Restaurants by ID
+    public RestaurantResponseDTO getRestaurantById(Integer restaurantId){
+        Restaurant restaurant = restaurantRepository.findActiveById(restaurantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id: " + restaurantId));
+
+        return RestaurantResponseDTO.fromEntity(restaurant);
+    }
+
 }
