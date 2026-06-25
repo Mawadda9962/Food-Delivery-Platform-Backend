@@ -24,4 +24,9 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     //deactivate Customer by id
     @Query("SELECT c FROM Customer c WHERE c.id = :id AND c.isActive = true")
     Optional<Customer> findActiveById(@Param("id") Integer id);
+
+    @Query("SELECT a FROM Customer a WHERE a.id = :id AND a.isActive = true")
+    List<Customer> findAllActiveCustomers();
+
+
 }

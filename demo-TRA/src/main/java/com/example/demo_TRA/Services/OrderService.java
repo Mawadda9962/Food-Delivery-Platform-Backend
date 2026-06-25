@@ -49,12 +49,12 @@ public class OrderService {
         Customer customer = customerRepository.findActiveById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id: " + customerId));
 
-        List<Restaurant> restaurants = restaurantRepository.findActiveById(restaurantId);
+        Optional<Restaurant> restaurants = restaurantRepository.findActiveById(restaurantId);
 
         if (restaurants.isEmpty()) {
             throw new ResourceNotFoundException("Restaurant not found with id: " + restaurantId);
         }
-        Restaurant restaurant = restaurants.get(0);
+        Restaurant restaurant = restaurants.get();
 
         Order order = new Order();
         order.setOrderCode(HelperUtils.generateCode("ORD"));
@@ -115,13 +115,13 @@ public class OrderService {
     }
 
     public OrderResponseDTO addMenuItemToOrder(Integer orderId, Integer menuItemId, int quantity) {
-        List<Order> orders = orderRepository.findActiveById(orderId);
+        Optional<Order> orders = orderRepository.findActiveById(orderId);
 
         if (orders.isEmpty()) {
             throw new ResourceNotFoundException("Order not found with id: " + orderId);
         }
 
-        Order order = orders.get(0);
+        Order order = orders.get();
 
         List<MenuItem> menuItems = menuItemRepository.findActiveById(menuItemId);
         if (menuItems.isEmpty()) {
@@ -148,7 +148,7 @@ public class OrderService {
     //Remove Menu Item From Order
 
     public void removeMenuItemFromOrder(Integer orderId, Integer orderItemId) {
-        List<Order> orders = orderRepository.findActiveById(orderId);
+        Optional<Order> orders = orderRepository.findActiveById(orderId);
         if (orders.isEmpty()) {
             throw new ResourceNotFoundException("Order not found with id: " + orderId);
         }
@@ -166,11 +166,11 @@ public class OrderService {
 
     // apply Discount
     public OrderResponseDTO applyDiscount(Integer orderId, double discountAmount) {
-        List<Order> orders = orderRepository.findActiveById(orderId);
+        Optional<Order> orders = orderRepository.findActiveById(orderId);
         if (orders.isEmpty()) {
             throw new ResourceNotFoundException("Order not found with id: " + orderId);
         }
-        Order order = orders.get(0);
+        Order order = orders.get();
 
         order.setDiscountAmount(discountAmount);
         order.setUpdateDate(LocalDateTime.now());
@@ -181,11 +181,11 @@ public class OrderService {
 
     //Update Order State
     public OrderResponseDTO updateOrderStatus(Integer orderId, String newStatus) {
-        List<Order> orders = orderRepository.findActiveById(orderId);
+        Optional<Order> orders = orderRepository.findActiveById(orderId);
         if (orders.isEmpty()) {
             throw new ResourceNotFoundException("Order not found with id: " + orderId);
         }
-        Order order = orders.get(0);
+        Order order = orders.get();
 
         order.setStatus(newStatus);
         order.setUpdateDate(LocalDateTime.now());
@@ -196,11 +196,11 @@ public class OrderService {
 
     // cancel Order
     public OrderResponseDTO cancelOrder(Integer orderId) {
-        List<Order> orders = orderRepository.findActiveById(orderId);
+        Optional<Order> orders = orderRepository.findActiveById(orderId);
         if (orders.isEmpty()) {
             throw new ResourceNotFoundException("Order not found with id: " + orderId);
         }
-        Order order = orders.get(0);
+        Order order = orders.get();
 
         if (!"PENDING".equals(order.getStatus())) {
             throw new InvalidOrderStateException("Order cannot be cancelled unless it is PENDING. Current status: " + order.getStatus());
@@ -215,11 +215,11 @@ public class OrderService {
 
     // calculate Order Totals
     public OrderResponseDTO calculateOrderTotals(Integer orderId) {
-        List<Order> orders = orderRepository.findActiveById(orderId);
+        Optional<Order> orders = orderRepository.findActiveById(orderId);
         if (orders.isEmpty()) {
             throw new ResourceNotFoundException("Order not found with id: " + orderId);
         }
-        Order order = orders.get(0);
+        Order order = orders.get();
 
         List<OrderItem> orderItems = orderItemRepository.findByOrderId(orderId);
 
@@ -241,11 +241,11 @@ public class OrderService {
     }
 
     public CorporateOrderResponseDTO placeCorporateOrder(CorporateOrderRequestDTO dto) {
-        List<Restaurant> restaurants = restaurantRepository.findActiveById(dto.getRestaurantId());
+        Optional<Restaurant> restaurants = restaurantRepository.findActiveById(dto.getRestaurantId());
         if (restaurants.isEmpty()) {
             throw new ResourceNotFoundException("Restaurant not found with id: " + dto.getRestaurantId());
         }
-        Restaurant restaurant = restaurants.get(0);
+        Restaurant restaurant = restaurants.get();
 
         CorporateOrder corporateOrder = dto.toEntity();
         corporateOrder.setCorporateCode(HelperUtils.generateCode("CORP"));

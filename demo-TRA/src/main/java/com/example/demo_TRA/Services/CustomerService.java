@@ -124,4 +124,15 @@ public class CustomerService {
         customer.setUpdateDate(LocalDateTime.now());
         customerRepository.save(customer);
     }
+
+    //Get All Customers
+    public List<CustomerResponseDTO> getAllCustomers(){
+        List<Customer> customers = customerRepository.findAllActiveCustomers();
+        return CustomerResponseDTO.fromEntity(customers);
+    }
+
+    //Get Customer By Id
+    public CustomerResponseDTO getCustomerById(Integer customerId){
+
+    }
 }
