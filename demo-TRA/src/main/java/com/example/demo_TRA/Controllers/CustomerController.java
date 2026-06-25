@@ -24,9 +24,21 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(customerService.createCustomer(dto));
     }
 
+    //Get All Customers
     @GetMapping
     public ResponseEntity<List<CustomerResponseDTO>> getAllCustomers(){
         return ResponseEntity.ok(customerService.getAllCustomers());
+    }
+
+    //Get Customer By ID
+    @GetMapping
+    public ResponseEntity<CustomerResponseDTO> GetCustomerById(@PathVariable Integer id ){
+        return ResponseEntity.ok(customerService.getCustomerById(id));
+    }
+
+    //Get Customer By Email
+    public ResponseEntity<CustomerResponseDTO> GetCustomerByEmail(@PathVariable String email){
+        return ResponseEntity.ok(customerService.getCustomerByEmail(email));
     }
 
 }
