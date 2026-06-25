@@ -27,5 +27,4 @@ public interface OrderRepository extends JpaRepository<Order,Integer> {
 
     @Query("SELECT o FROM Order o WHERE o.id = :id AND o.isActive = true")
     Optional<Order> findActiveById(@Param("id") Integer id);
-
 }

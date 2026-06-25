@@ -251,4 +251,23 @@ public class OrderService {
         CorporateOrder saved = corporateOrderRepository.save(corporateOrder);
         return CorporateOrderResponseDTO.fromEntity(saved);
     }
+
+    //confirm Order (lock the order as no more items can be added)
+    public OrderResponseDTO confirmOrder(Integer orderId){
+        Optional<Order> orders = orderRepository.findActiveById(orderId);
+        if (orders.isEmpty()) {
+            throw new ResourceNotFoundException("Order not found with id: " + orderId);
+        }
+        Order order = orders.get();
+        if (!"PENDING".equals(order.getStatus())) {
+            throw new InvalidOrderStateException(
+                    "Order can only be confirmed when PENDING. Current status: " + order.getStatus());
+        }
+
+        order.setStatus("CONFIRMED");
+        order.setUpdateDate(LocalDateTime.now());
+
+        Order saved = orderRepository.save(order);
+        return OrderResponseDTO.fromEntity(saved);
+    }
 }
