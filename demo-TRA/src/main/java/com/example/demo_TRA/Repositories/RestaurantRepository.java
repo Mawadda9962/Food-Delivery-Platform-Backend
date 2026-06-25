@@ -28,5 +28,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant,Integer> 
     @Query("SELECT r FROM Restaurant r WHERE r.id = :id AND r.isActive = true")
     Optional<Restaurant> findActiveById(@Param("id") Integer id);
 
+    @Query("SELECT r FROM Restaurant r WHERE r.isActive = true")
+    List<Restaurant> findAllActiveRestaurants();
 
 }

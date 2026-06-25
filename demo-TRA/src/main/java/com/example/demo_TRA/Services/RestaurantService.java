@@ -52,13 +52,9 @@ public class RestaurantService {
 
     //Toggle Accepting Orders
     public RestaurantResponseDTO toggleAcceptingOrders(Integer restaurantId, boolean status) {
-        List<Restaurant> result = restaurantRepository.findActiveById(restaurantId);
+        Restaurant restaurant = restaurantRepository.findActiveById(restaurantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id: " + restaurantId));
 
-        if (result.isEmpty()) {
-            throw new ResourceNotFoundException("Restaurant not found with id: " + restaurantId);
-        }
-
-        Restaurant restaurant = result.get(0);
         restaurant.setAcceptingOrders(status);
         restaurant.setUpdateDate(LocalDateTime.now());
 
@@ -68,13 +64,9 @@ public class RestaurantService {
 
     //Updating deliveryFee
     public RestaurantResponseDTO updateDeliveryFee(Integer restaurantId, double newFee){
-        List<Restaurant> result = restaurantRepository.findActiveById(restaurantId);
+        Restaurant restaurant = restaurantRepository.findActiveById(restaurantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id: " + restaurantId));
 
-        if (result.isEmpty()){
-            throw new ResourceNotFoundException("Restaurant not found with id: " + restaurantId);
-        }
-
-        Restaurant restaurant = result.get(0);
         restaurant.setDeliveryFee(newFee);
         restaurant.setUpdateDate(LocalDateTime.now());
 
@@ -96,23 +88,18 @@ public class RestaurantService {
 
     //get Menu For Restaurant
     public List<MenuItemResponseDTO> getMenuForRestaurant(Integer restaurantId){
-        List<Restaurant> result = restaurantRepository.findActiveById(restaurantId);
-
-        if (result.isEmpty()){
-            throw new ResourceNotFoundException("Restaurant not found with id: " + restaurantId);
-        }
+        restaurantRepository.findActiveById(restaurantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id: " + restaurantId));
 
         List<MenuItem> menuItems = menuItemRepository.findByRestaurantId(restaurantId);
         return MenuItemResponseDTO.fromEntity(menuItems);
     }
 
+
     //bulk Update Menu Item Prices
     public List<MenuItemResponseDTO> bulkUpdateMenuItemPrices(Integer restaurantId, double percentageIncrease) {
-        List<Restaurant> result = restaurantRepository.findActiveById(restaurantId);
-
-        if (result.isEmpty()) {
-            throw new ResourceNotFoundException("Restaurant not found with id: " + restaurantId);
-        }
+        restaurantRepository.findActiveById(restaurantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id: " + restaurantId));
 
         List<MenuItem> menuItems = menuItemRepository.findByRestaurantId(restaurantId);
 
@@ -124,4 +111,11 @@ public class RestaurantService {
         }
         return MenuItemResponseDTO.fromEntity(menuItems);
     }
+
+    //Get All Restaurants
+    public List<RestaurantResponseDTO> getAllRestaurants(){
+        List<Restaurant> restaurants = restaurantRepository.findAllActiveRestaurants();
+        return RestaurantResponseDTO.fromEntity(restaurants);
+    }
+
 }
