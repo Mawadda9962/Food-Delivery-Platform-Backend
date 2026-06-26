@@ -77,4 +77,29 @@ public class PaymentService {
         return PaymentResponseDTO.fromEntity(updatedPayment);
     }
 
+    // Complete Payment
+    public PaymentResponseDTO completePayment(Integer paymentId) {
+        Payment payment = paymentRepository.findActiveById(paymentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Payment not found with id: " + paymentId));
+
+        if ("COMPLETED".equalsIgnoreCase(payment.getStatus())) {
+            throw new InvalidOrderStateException("Payment is already completed.");
+        }
+
+        payment.setStatus("COMPLETED");
+        payment.setProcessedAt(LocalDateTime.now());
+        payment.setUpdateDate(LocalDateTime.now());
+
+        return PaymentResponseDTO.fromEntity(paymentRepository.save(payment));
+    }
+
+    // Get Payment By Order Id
+    public PaymentResponseDTO getPaymentByOrderId(Integer orderId) {
+        Payment payment = paymentRepository.findActivePaymentByOrderId(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Payment not found for order id: " + orderId));
+
+        return PaymentResponseDTO.fromEntity(payment);
+    }
+
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ReviewService {
@@ -78,4 +79,29 @@ public class ReviewService {
         Review savedReview = reviewRepository.save(review);
         return ReviewResponseDTO.fromEntity(savedReview);
     }
+
+    // Get Reviews By Restaurant
+    public List<ReviewResponseDTO> getReviewsByRestaurant(Integer restaurantId) {
+        List<Review> reviews = reviewRepository.findByRestaurantId(restaurantId);
+        return ReviewResponseDTO.fromEntity(reviews);
+    }
+
+
+    // Get Reviews By Driver
+    public List<ReviewResponseDTO> getReviewsByDriver(Integer driverId) {
+        List<Review> reviews = reviewRepository.findByDeliveryDriverId(driverId);
+        return ReviewResponseDTO.fromEntity(reviews);
+    }
+
+    // Soft-delete Review
+    public void deleteReview(Integer reviewId) {
+        Review review = reviewRepository.findActiveById(reviewId)
+                .orElseThrow(() -> new ResourceNotFoundException("Review not found with id: " + reviewId));
+
+        review.setIsActive(false);
+        review.setUpdateDate(LocalDateTime.now());
+        reviewRepository.save(review);
+    }
+
+
 }
