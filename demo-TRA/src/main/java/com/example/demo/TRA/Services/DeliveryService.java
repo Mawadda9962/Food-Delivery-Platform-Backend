@@ -197,5 +197,18 @@ public class DeliveryService {
         return DeliveryResponseDTO.fromEntity(delivery);
     }
 
+    // Get Delivery ById
+    public DeliveryResponseDTO getDeliveryById(Integer deliveryId) {
+        Delivery delivery = deliveryRepository.findActiveById(deliveryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Delivery not found with ID: " + deliveryId));
+
+        return DeliveryResponseDTO.fromEntity(delivery);
+    }
+
+    // Get All Deliveries By Status
+    public List<DeliveryResponseDTO> getDeliveriesByStatus(String status) {
+        List<Delivery> deliveries = deliveryRepository.findByStatus(status);
+        return DeliveryResponseDTO.fromEntity(deliveries);
+    }
 }
 
