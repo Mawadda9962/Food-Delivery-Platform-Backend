@@ -27,4 +27,8 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
     @Query("SELECT c FROM Customer c WHERE c.isActive = true")
     List<Customer> findAllActiveCustomers();
+
+    //For Reporting
+    @Query(value = "SELECT * FROM customer " + "WHERE is_active = true " + "ORDER BY loyalty_points DESC LIMIT 10", nativeQuery = true)
+    List<Customer> findTop10ByLoyaltyPoints();
 }
