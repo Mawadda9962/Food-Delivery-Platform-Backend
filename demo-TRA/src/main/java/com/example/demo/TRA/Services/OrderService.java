@@ -111,6 +111,7 @@ public class OrderService {
         return OrderResponseDTO.fromEntity(finalOrder);
     }
 
+    //add MenuItem To Order
     public OrderResponseDTO addMenuItemToOrder(Integer orderId, Integer menuItemId, int quantity) {
         Optional<Order> orders = orderRepository.findActiveById(orderId);
 
@@ -140,7 +141,6 @@ public class OrderService {
     }
 
     //Remove Menu Item From Order
-
     public void removeMenuItemFromOrder(Integer orderId, Integer orderItemId) {
         Optional<Order> orders = orderRepository.findActiveById(orderId);
         if (orders.isEmpty()) {
@@ -234,6 +234,7 @@ public class OrderService {
         return OrderResponseDTO.fromEntity(saved);
     }
 
+    //place Corporate Order
     public CorporateOrderResponseDTO placeCorporateOrder(CorporateOrderRequestDTO dto) {
         Optional<Restaurant> restaurants = restaurantRepository.findActiveById(dto.getRestaurantId());
         if (restaurants.isEmpty()) {
@@ -270,4 +271,25 @@ public class OrderService {
         Order saved = orderRepository.save(order);
         return OrderResponseDTO.fromEntity(saved);
     }
+
+    public OrderResponseDTO getOrderById(Integer orderId) {
+        Optional<Order> orders = orderRepository.findActiveById(orderId);
+        if (orders.isEmpty()) {
+            throw new ResourceNotFoundException("Order not found with id: " + orderId);
+        }
+        return OrderResponseDTO.fromEntity(orders.get());
+    }
+
+    // Get Orders By Restaurant And Status
+    public List<OrderResponseDTO> getOrdersByRestaurantAndStatus(Integer restaurantId, String status) {
+
+        List<Order> orders = orderRepository.findByRestaurantIdAndStatus(restaurantId, status);
+
+        return OrderResponseDTO.fromEntity(orders);
+    }
+
+
+
+
+
 }
