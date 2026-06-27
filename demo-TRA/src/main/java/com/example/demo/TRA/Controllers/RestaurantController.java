@@ -1,4 +1,4 @@
-package com.example.demo.TRA.Controllers;
+  package com.example.demo.TRA.Controllers;
 
 
 import com.example.demo.TRA.DTOs.RequestDTO.ComboMealRequestDTO;
@@ -93,5 +93,4 @@ public class RestaurantController {
     public ResponseEntity<List<MenuItemResponseDTO>> bulkUpdateMenuItemPrices(@PathVariable Integer id, @RequestParam double percentage) {
         return ResponseEntity.ok(restaurantService.bulkUpdateMenuItemPrices(id, percentage));
     }
-
 }
