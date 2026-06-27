@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -201,7 +202,6 @@ public class DeliveryService {
     public DeliveryResponseDTO getDeliveryById(Integer deliveryId) {
         Delivery delivery = deliveryRepository.findActiveById(deliveryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Delivery not found with ID: " + deliveryId));
-
         return DeliveryResponseDTO.fromEntity(delivery);
     }
 
@@ -209,6 +209,27 @@ public class DeliveryService {
     public List<DeliveryResponseDTO> getDeliveriesByStatus(String status) {
         List<Delivery> deliveries = deliveryRepository.findByStatus(status);
         return DeliveryResponseDTO.fromEntity(deliveries);
+    }
+
+    //Extended Use-Case Endpoints
+    //Nearby Online Drivers
+    public List<DeliveryDriverResponseDTO> getNearbyDrivers(double lat, double lng, double radiusKm) {
+
+        List<DeliveryDriver> drivers = deliveryDriverRepository.findOnlineDrivers();
+
+        List<DeliveryDriver> nearbyDrivers = new ArrayList<>();
+
+        for (DeliveryDriver driver : drivers) {
+            if(driver.getCurrentLat() == null ||
+                    driver.getCurrentLng() == null) {
+                continue;
+            }
+            double distance = HelperUtils.calculateDistance(lat, lng, driver.getCurrentLat(), driver.getCurrentLng());
+            if(distance <= radiusKm) {
+                nearbyDrivers.add(driver);
+            }
+        }
+        return DeliveryDriverResponseDTO.fromEntity(nearbyDrivers);
     }
 }
 

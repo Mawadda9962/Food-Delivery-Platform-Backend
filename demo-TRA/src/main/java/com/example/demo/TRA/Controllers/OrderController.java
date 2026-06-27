@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("orders")
@@ -86,6 +87,25 @@ public class OrderController {
     public ResponseEntity<CorporateOrderResponseDTO> placeCorporateOrder(@RequestBody CorporateOrderRequestDTO dto) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(orderService.placeCorporateOrder(dto));
+    }
+
+    //Extended Use-Case
+    // Get Order Timeline
+    @GetMapping("timeline")
+    public ResponseEntity<Map<String, Object>> getOrderTimeline(@PathVariable Integer id) {
+        return ResponseEntity.ok(orderService.getOrderTimeline(id));
+    }
+
+    //Duplicate a past order as a new PENDING order
+    @PostMapping("reorder")
+    public ResponseEntity<OrderResponseDTO> reorder(@PathVariable Integer id) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.reorder(id));
+    }
+
+    // get Order Eta
+    @GetMapping("eta")
+    public ResponseEntity<Map<String, Object>> getOrderEta(@PathVariable Integer id) {
+        return ResponseEntity.ok(orderService.getOrderEta(id));
     }
 
 }

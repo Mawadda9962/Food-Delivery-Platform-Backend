@@ -94,5 +94,4 @@ public class RestaurantController {
         return ResponseEntity.ok(restaurantService.bulkUpdateMenuItemPrices(id, percentage));
     }
 
-
 }

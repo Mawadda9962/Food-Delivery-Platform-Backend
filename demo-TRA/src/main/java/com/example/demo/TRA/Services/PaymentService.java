@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class PaymentService {
@@ -93,7 +97,7 @@ public class PaymentService {
         return PaymentResponseDTO.fromEntity(paymentRepository.save(payment));
     }
 
-    // Get Payment By Order Id
+    // Get Payment By OrderId
     public PaymentResponseDTO getPaymentByOrderId(Integer orderId) {
         Payment payment = paymentRepository.findActivePaymentByOrderId(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -102,4 +106,62 @@ public class PaymentService {
         return PaymentResponseDTO.fromEntity(payment);
     }
 
+    //Extended Use-Case Endpoints
+    // Get Payments With Filters
+    public List<PaymentResponseDTO> getPayments(String method, String status, LocalDate from, LocalDate to) {
+        List<Payment> payments = paymentRepository.findAll();
+        List<Payment> filteredPayments = new ArrayList<>();
+
+        for(Payment payment : payments){
+            // soft delete check
+            if(!payment.getIsActive()){
+                continue;
+            }
+
+            boolean match = true;
+            if(method != null && !payment.getPaymentMethod().equalsIgnoreCase(method)){
+                match = false;
+            }
+
+            if(status != null && !payment.getStatus().equalsIgnoreCase(status)) {
+                match = false;
+            }
+
+            if(from != null && payment.getProcessedAt() != null && payment.getProcessedAt().toLocalDate().isBefore(from)){
+                match = false;
+            }
+
+            if(to != null && payment.getProcessedAt() != null && payment.getProcessedAt().toLocalDate().isAfter(to)){
+                match = false;
+            }
+
+            if(match){
+                filteredPayments.add(payment);
+            }
+        }
+
+        return PaymentResponseDTO.fromEntity(filteredPayments);
+    }
+
+    // Analytics By Payment Method
+    public Map<String,Object> getPaymentAnalyticsByMethod(){
+        List<Payment> payments = paymentRepository.findAll();
+        Map<String,Double> totals = new HashMap<>();
+
+        for(Payment payment : payments) {
+            if (!payment.getIsActive()) {
+                continue;
+            }
+            if (!"COMPLETED".equalsIgnoreCase(payment.getStatus())) {
+                continue;
+            }
+            String method = payment.getPaymentMethod();
+            Double amount = totals.getOrDefault(method, 0.0);
+            totals.put(method, amount + payment.getAmount());
+        }
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("totalProcessedByMethod", totals);
+        return result;
+    }
 }

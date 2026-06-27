@@ -7,6 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("payments")
 public class PaymentController {
@@ -43,8 +47,24 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.getPaymentByOrderId(orderId));
     }
 
+    // Filterable Payment List
+    @GetMapping
+    public ResponseEntity<List<PaymentResponseDTO>> getPayments(
+            @RequestParam(required = false) String method,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) LocalDate from,
+            @RequestParam(required = false) LocalDate to,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size) {
 
+        return ResponseEntity.ok(paymentService.getPayments(method, status, from, to));
+    }
 
+    // Payment Analytics By Method
+    @GetMapping("/analytics/by-method")
+    public ResponseEntity<Map<String,Object>> getPaymentAnalyticsByMethod() {
+        return ResponseEntity.ok(paymentService.getPaymentAnalyticsByMethod());
+    }
 
 
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -148,5 +149,61 @@ public class ReviewService {
         summary.put("totalDeliveryFees", totalDeliveryFees != null ? totalDeliveryFees : 0.0);
 
         return summary;
+    }
+
+
+
+    //Extended Use-Case Endpoints
+    // Get Average Restaurant Rating
+    public Double getRestaurantAverageRating(Integer restaurantId) {
+        List<Review> reviews = reviewRepository.findByRestaurantId(restaurantId);
+
+        if(reviews.isEmpty()){
+            return 0.0;
+        }
+        double total = 0;
+        for(Review review : reviews){
+
+            total += review.getRating();
+        }
+
+        return total / reviews.size();
+    }
+
+
+    // Get Average Driver Rating
+    public Double getDriverAverageRating(Integer driverId) {
+        List<Review> reviews = reviewRepository.findByDeliveryDriverId(driverId);
+
+        if(reviews.isEmpty()){
+            return 0.0;
+        }
+
+        double total = 0;
+
+        for(Review review : reviews){
+            total += review.getRating();
+        }
+
+        return total / reviews.size();
+    }
+
+
+    // Paginated Restaurant Reviews
+    public List<ReviewResponseDTO> getRestaurantReviewsPaginated(Integer restaurantId, Integer page, Integer size){
+        List<Review> reviews = reviewRepository.findByRestaurantId(restaurantId);
+
+        if(page == null || size == null){
+            return ReviewResponseDTO.fromEntity(reviews);
+        }
+
+        int start = page * size;
+        int end = Math.min(start + size, reviews.size());
+
+        if(start >= reviews.size()){
+            return new ArrayList<>();
+        }
+
+        return ReviewResponseDTO.fromEntity(reviews.subList(start,end));
     }
 }

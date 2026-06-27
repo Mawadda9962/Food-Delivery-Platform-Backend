@@ -54,5 +54,25 @@ public class ReviewController {
         return ResponseEntity.noContent().build();
     }
 
+    // Average rating for restaurant
+    @GetMapping("/restaurant/{restaurantId}/average")
+    public ResponseEntity<Double> getRestaurantAverage(@PathVariable Integer restaurantId){
 
+        return ResponseEntity.ok(reviewService.getRestaurantAverageRating(restaurantId));
+    }
+
+
+    // Average rating for driver
+    @GetMapping("/driver/{driverId}/average")
+    public ResponseEntity<Double> getDriverAverage(@PathVariable Integer driverId){
+
+        return ResponseEntity.ok(reviewService.getDriverAverageRating(driverId));
+    }
+
+    // Paginated reviews for restaurant
+    @GetMapping("/restaurant/{restaurantId}/page")
+    public ResponseEntity<List<ReviewResponseDTO>> getRestaurantReviewsPaginated(@PathVariable Integer restaurantId, @RequestParam int page, @RequestParam int size){
+
+        return ResponseEntity.ok(reviewService.getRestaurantReviewsPaginated(restaurantId, page, size));
+    }
 }

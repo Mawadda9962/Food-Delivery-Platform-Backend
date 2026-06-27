@@ -23,6 +23,8 @@ public class Restaurant extends BaseEntity{
     private Double minOrderAmount;
     private Double deliveryFee;
     private Boolean acceptingOrders;
+    private Double latitude;   //Extended Use-Case
+    private Double longitude;  // Extended Use-Case
 
 
     @ManyToOne

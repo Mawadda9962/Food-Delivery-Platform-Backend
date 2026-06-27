@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -288,8 +290,99 @@ public class OrderService {
         return OrderResponseDTO.fromEntity(orders);
     }
 
+    //Extended Use-Case
+    //Status-change history for an order
+    public Map<String, Object> getOrderTimeline(Integer orderId) {
+        Order order = orderRepository.findActiveById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + orderId));
+
+        Map<String, Object> timeline = new LinkedHashMap<>();
+        timeline.put("orderCode", order.getOrderCode());
+        timeline.put("currentStatus", order.getStatus());
+        timeline.put("orderDate", order.getOrderDate());
+        timeline.put("lastUpdated", order.getUpdateDate());
+
+        if (order.getDelivery() != null) {
+            timeline.put("assignedAt", order.getDelivery().getAssignedAt());
+            timeline.put("pickedUpAt", order.getDelivery().getPickedUpAt());
+            timeline.put("deliveredAt", order.getDelivery().getDeliveredAt());
+        }
+
+        return timeline;
+    }
 
 
+    //Duplicate a past order as a new PENDING order
+    public OrderResponseDTO reorder(Integer orderId) {
+        Order original = orderRepository.findActiveById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + orderId));
 
+        Order newOrder = new Order();
+        newOrder.setOrderCode(HelperUtils.generateCode("ORD"));
+        newOrder.setOrderDate(LocalDate.now());
+        newOrder.setStatus("PENDING");
+        newOrder.setSubtotal(original.getSubtotal());
+        newOrder.setDeliveryFee(original.getDeliveryFee());
+        newOrder.setDiscountAmount(0.0);
+        newOrder.setTotalAmount(original.getSubtotal() + original.getDeliveryFee());
+        newOrder.setDeliveryNotes(original.getDeliveryNotes());
+        newOrder.setCustomer(original.getCustomer());
+        newOrder.setRestaurant(original.getRestaurant());
+        newOrder.setCreateDate(LocalDate.now());
+        newOrder.setUpdateDate(LocalDateTime.now());
+        newOrder.setIsActive(true);
 
+        Order saved = orderRepository.save(newOrder);
+
+        List<OrderItem> originalItems = orderItemRepository.findByOrderId(orderId);
+        for (OrderItem oi : originalItems) {
+            OrderItem copy = new OrderItem();
+            copy.setOrder(saved);
+            copy.setMenuItem(oi.getMenuItem());
+            copy.setQuantity(oi.getQuantity());
+            copy.setUnitPrice(oi.getUnitPrice());
+            copy.setTotalPrice(oi.getTotalPrice());
+            copy.setSpecialInstructions(oi.getSpecialInstructions());
+            copy.setCreateDate(LocalDate.now());
+            copy.setUpdateDate(LocalDateTime.now());
+            copy.setIsActive(true);
+            orderItemRepository.save(copy);
+        }
+
+        return OrderResponseDTO.fromEntity(saved);
+    }
+
+    //Estimated delivery time based on driver location and distance
+    public Map<String, Object> getOrderEta(Integer orderId) {
+        Order order = orderRepository.findActiveById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + orderId));
+
+        Map<String, Object> eta = new LinkedHashMap<>();
+        eta.put("orderCode", order.getOrderCode());
+        eta.put("status", order.getStatus());
+
+        if (order.getDelivery() != null && order.getDelivery().getDeliveryDriver() != null) {
+            DeliveryDriver driver = order.getDelivery().getDeliveryDriver();
+            if (driver.getCurrentLat() != null && driver.getCurrentLng() != null
+                    && order.getRestaurant().getLatitude() != null
+                    && order.getRestaurant().getLongitude() != null) {
+
+                double dist = HelperUtils.calculateDistance(
+                        driver.getCurrentLat(), driver.getCurrentLng(),
+                        order.getRestaurant().getLatitude(), order.getRestaurant().getLongitude());
+
+                long etaMinutes = Math.round((dist / 30.0) * 60);
+                eta.put("driverDistanceKm", dist);
+                eta.put("estimatedMinutes", etaMinutes);
+            } else {
+                eta.put("estimatedMinutes", null);
+                eta.put("note", "Driver location not available");
+            }
+        } else {
+            eta.put("estimatedMinutes", null);
+            eta.put("note", "No driver assigned yet");
+        }
+
+        return eta;
+    }
 }

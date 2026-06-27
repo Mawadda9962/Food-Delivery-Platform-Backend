@@ -1,5 +1,6 @@
 package com.example.demo.TRA.Controllers;
 
+import com.example.demo.TRA.DTOs.ResponseDTO.DeliveryDriverResponseDTO;
 import com.example.demo.TRA.DTOs.ResponseDTO.DeliveryResponseDTO;
 import com.example.demo.TRA.Services.DeliveryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,12 @@ public class DeliveryController {
         return ResponseEntity.ok(deliveryService.getDeliveriesByStatus(status));
     }
 
+    //Extended Use-Case Endpoints
+    // Get nearby online drivers
+    @GetMapping("/drivers/nearby")
+    public ResponseEntity<List<DeliveryDriverResponseDTO>>
+    getNearbyDrivers(@RequestParam double lat, @RequestParam double lng, @RequestParam double radiusKm){
 
-
+        return ResponseEntity.ok(deliveryService.getNearbyDrivers(lat, lng, radiusKm));
+    }
 }
