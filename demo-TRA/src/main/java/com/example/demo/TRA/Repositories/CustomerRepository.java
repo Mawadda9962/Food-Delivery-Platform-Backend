@@ -4,6 +4,8 @@ import com.example.demo.TRA.Entities.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,4 +33,9 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     //For Reporting
     @Query(value = "SELECT * FROM customer " + "WHERE is_active = true " + "ORDER BY loyalty_points DESC LIMIT 10", nativeQuery = true)
     List<Customer> findTop10ByLoyaltyPoints();
+
+    //Extended Use-Case
+    // Search customers by first or last name with pagination
+    @Query("SELECT c FROM Customer c " + "WHERE c.isActive = true " + "AND (" + "LOWER(c.firstName) LIKE LOWER(CONCAT('%', :name, '%')) " + "OR LOWER(c.lastName) LIKE LOWER(CONCAT('%', :name, '%'))" + ")")
+    Page<Customer> searchCustomers(@Param("name") String name, Pageable pageable);
 }
