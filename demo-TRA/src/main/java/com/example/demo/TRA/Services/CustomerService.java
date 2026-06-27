@@ -1,5 +1,6 @@
 package com.example.demo.TRA.Services;
 
+import com.example.demo.TRA.DTOs.CustomerPatchDTO;
 import com.example.demo.TRA.DTOs.RequestDTO.CustomerAddressRequestDTO;
 import com.example.demo.TRA.DTOs.RequestDTO.CustomerRequestDTO;
 import com.example.demo.TRA.DTOs.ResponseDTO.CustomerAddressResponseDTO;
@@ -16,6 +17,9 @@ import com.example.demo.TRA.Utils.HelperUtils;
 import com.example.demo.TRA.Entities.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -212,5 +216,52 @@ public class CustomerService {
         List<Order> orders = orderRepository.findByCustomerId(customerId);
         return OrderResponseDTO.fromEntity(orders);
     }
+
+
+    //Extended Use-Case
+    //Search Customer
+    public Page<CustomerResponseDTO> searchCustomers(String name, int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Customer> customers = customerRepository.searchCustomers(name, pageable);
+
+        return customers.map(CustomerResponseDTO::fromEntity);
+    }
+
+    //Partial Update Customer
+    public CustomerResponseDTO patchCustomer(Integer customerId, CustomerPatchDTO dto) {
+
+        Customer customer = customerRepository.findActiveById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerId));
+
+        if (dto.getFirstName() != null) {
+            customer.setFirstName(dto.getFirstName());
+        }
+        if (dto.getLastName() != null) {
+            customer.setLastName(dto.getLastName());
+        }
+        if (dto.getPhone() != null) {
+            customer.setPhone(dto.getPhone());
+        }
+        if (dto.getCustomerEmail() != null) {
+            Optional<Customer> existingCustomer = customerRepository.findByEmail(dto.getCustomerEmail());
+
+            if (existingCustomer.isPresent()
+                    && !existingCustomer.get().getId().equals(customerId)) {
+
+                throw new DuplicateResourceException(
+                        "Customer with email " + dto.getCustomerEmail() + " already exists");
+            }
+            customer.setCustomerEmail(dto.getCustomerEmail());
+        }
+        customer.setUpdateDate(LocalDateTime.now());
+        Customer savedCustomer = customerRepository.save(customer);
+        return CustomerResponseDTO.fromEntity(savedCustomer);
+    }
+
+
+
+
 
 }

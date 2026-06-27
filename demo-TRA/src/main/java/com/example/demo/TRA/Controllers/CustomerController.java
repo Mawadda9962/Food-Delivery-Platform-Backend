@@ -1,5 +1,6 @@
 package com.example.demo.TRA.Controllers;
 
+import com.example.demo.TRA.DTOs.CustomerPatchDTO;
 import com.example.demo.TRA.DTOs.RequestDTO.CustomerAddressRequestDTO;
 import com.example.demo.TRA.DTOs.RequestDTO.CustomerRequestDTO;
 import com.example.demo.TRA.DTOs.ResponseDTO.CustomerAddressResponseDTO;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -99,8 +101,19 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.getCustomerOrders(id));
     }
 
+    //Search Endpoint
+    @GetMapping("/search")
+    public ResponseEntity<Page<CustomerResponseDTO>> searchCustomers(@RequestParam(defaultValue = "") String name,
+                                                                     @RequestParam(defaultValue = "0") int page,
+                                                                     @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(customerService.searchCustomers(name, page, size));
+    }
 
+    //PATCH Endpoint
+    @PatchMapping("/{id}")
+    public ResponseEntity<CustomerResponseDTO> patchCustomer(@PathVariable Integer id, @RequestBody CustomerPatchDTO dto) {
 
-
+        return ResponseEntity.ok(customerService.patchCustomer(id, dto));
+    }
 
 }
