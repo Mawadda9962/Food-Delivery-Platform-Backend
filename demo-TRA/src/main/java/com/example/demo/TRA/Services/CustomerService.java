@@ -184,8 +184,7 @@ public class CustomerService {
             Integer customerId) {
 
         customerRepository.findActiveById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Customer not found with ID: " + customerId));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerId));
 
         List<CustomerAddress> addresses =
                 customerAddressRepository.findByCustomerId(customerId);
@@ -197,8 +196,7 @@ public class CustomerService {
 
         CustomerAddress address =
                 customerAddressRepository.findActiveById(addressId)
-                        .orElseThrow(() -> new ResourceNotFoundException(
-                                "Address not found with ID: " + addressId));
+                        .orElseThrow(() -> new ResourceNotFoundException("Address not found with ID: " + addressId));
 
         address.setIsActive(false);
         address.setUpdateDate(LocalDateTime.now());
@@ -259,9 +257,4 @@ public class CustomerService {
         Customer savedCustomer = customerRepository.save(customer);
         return CustomerResponseDTO.fromEntity(savedCustomer);
     }
-
-
-
-
-
 }
