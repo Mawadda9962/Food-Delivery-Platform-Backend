@@ -1,12 +1,14 @@
 package com.example.demo.TRA.Repositories;
 
+import com.example.demo.TRA.Entities.Payment;
 import com.example.demo.TRA.Entities.RestaurantOwner;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface RestaurantOwnerRepository {
+public interface RestaurantOwnerRepository extends JpaRepository<RestaurantOwner, Integer> {
     @Query("SELECT o FROM RestaurantOwner o WHERE o.id = :id AND o.isActive = true")
     List<RestaurantOwner> findActiveById(@Param("id") Integer id);
 

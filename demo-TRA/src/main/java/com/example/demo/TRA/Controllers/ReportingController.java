@@ -17,41 +17,37 @@ public class ReportingController {
     @Autowired
     ReviewService reviewService;
 
-    // GET /api/reports/revenue/restaurant/{restaurantId}?date=YYYY-MM-DD
+    // get Revenue For Restaurant
     @GetMapping("/revenue/restaurant/{restaurantId}")
-    public ResponseEntity<Double> getRevenueForRestaurant(
-            @PathVariable Integer restaurantId,
+    public ResponseEntity<Double> getRevenueForRestaurant(@PathVariable Integer restaurantId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
 
         return ResponseEntity.ok(reviewService.getRevenueForRestaurantOnDate(restaurantId, date));
     }
 
-    // GET /api/reports/orders/count/restaurant/{restaurantId}
+    // get Total Orders For Restaurant
     @GetMapping("/orders/count/restaurant/{restaurantId}")
-    public ResponseEntity<Long> getTotalOrdersForRestaurant(
-            @PathVariable Integer restaurantId) {
+    public ResponseEntity<Long> getTotalOrdersForRestaurant(@PathVariable Integer restaurantId) {
 
         return ResponseEntity.ok(reviewService.getTotalOrdersForRestaurant(restaurantId));
     }
 
-    // GET /api/reports/customers/top-loyalty
+    // get Top Loyalty Customers
     @GetMapping("/customers/top-loyalty")
     public ResponseEntity<List<CustomerResponseDTO>> getTopLoyaltyCustomers() {
         return ResponseEntity.ok(reviewService.getTopLoyaltyCustomers());
     }
 
-    // GET /api/reports/drivers/leaderboard
+    // get Drivers Leaderboard
     @GetMapping("/drivers/leaderboard")
     public ResponseEntity<List<Map<String, Object>>> getDriversLeaderboard() {
         return ResponseEntity.ok(reviewService.getDriversLeaderboard());
     }
 
-    // GET /api/reports/platform/daily-summary?date=YYYY-MM-DD
+    // get Plat form Daily Summary
     @GetMapping("/platform/daily-summary")
-    public ResponseEntity<Map<String, Object>> getPlatformDailySummary(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+    public ResponseEntity<Map<String, Object>> getPlatformDailySummary(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
 
         return ResponseEntity.ok(reviewService.getPlatformDailySummary(date));
     }
-
 }
