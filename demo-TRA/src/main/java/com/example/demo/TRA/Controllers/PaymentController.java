@@ -65,5 +65,4 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.getPaymentAnalyticsByMethod());
     }
 
-
 }
