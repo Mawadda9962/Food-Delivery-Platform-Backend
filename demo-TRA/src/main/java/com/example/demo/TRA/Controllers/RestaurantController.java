@@ -14,8 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
-@RestController
+  @RestController
 @RequestMapping("restaurants")
 public class RestaurantController {
 
@@ -93,4 +94,31 @@ public class RestaurantController {
     public ResponseEntity<List<MenuItemResponseDTO>> bulkUpdateMenuItemPrices(@PathVariable Integer id, @RequestParam double percentage) {
         return ResponseEntity.ok(restaurantService.bulkUpdateMenuItemPrices(id, percentage));
     }
+
+    // Restaurants within a radius
+    @GetMapping("/near")
+    public ResponseEntity<List<RestaurantResponseDTO>> getNearbyRestaurants(@RequestParam double lat, @RequestParam double lng, @RequestParam double radiusKm) {
+
+        return ResponseEntity.ok(restaurantService.getNearbyRestaurants(lat, lng, radiusKm));
+    }
+
+    // Restaurant analytics
+    @GetMapping("/{id}/analytics")
+    public ResponseEntity<Map<String, Object>> getRestaurantAnalytics(@PathVariable Integer id) {
+
+        return ResponseEntity.ok(restaurantService.getRestaurantAnalytics(id));
+    }
+
+      // Top selling menu items
+      @GetMapping("/{id}/menu/top-sellers")
+      public ResponseEntity<List<MenuItemResponseDTO>> getTopSellingMenuItems(@PathVariable Integer id) {
+
+          return ResponseEntity.ok(restaurantService.getTopSellingMenuItems(id));
+      }
+
+      // Search menu items across restaurants
+      @GetMapping("/menu/search")
+      public ResponseEntity<List<MenuItemResponseDTO>> searchMenuItems(@RequestParam(required = false) String keyword, @RequestParam(required = false) Double minCalories, @RequestParam(required = false) Double maxCalories) {
+          return ResponseEntity.ok(restaurantService.searchMenuItems(keyword, minCalories, maxCalories));
+      }
 }
