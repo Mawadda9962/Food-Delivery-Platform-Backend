@@ -72,8 +72,7 @@ public class DeliveryService {
                 deliveryDriverRepository.findOnlineDrivers();
 
         if (onlineDrivers.isEmpty()) {
-            throw new ResourceNotFoundException(
-                    "No online drivers available");
+            throw new ResourceNotFoundException("No online drivers available");
         }
 
         DeliveryDriver driver = onlineDrivers.get(0);

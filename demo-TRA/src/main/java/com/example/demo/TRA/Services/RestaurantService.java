@@ -15,12 +15,16 @@ import com.example.demo.TRA.Repositories.ComboMealRepository;
 import com.example.demo.TRA.Repositories.MenuItemRepository;
 import com.example.demo.TRA.Repositories.RestaurantOwnerRepository;
 import com.example.demo.TRA.Repositories.RestaurantRepository;
+import com.example.demo.TRA.Utils.HelperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RestaurantService {
@@ -182,5 +186,70 @@ public class RestaurantService {
 
         ComboMeal saved = comboMealRepository.save(comboMeal);
         return ComboMealResponseDTO.fromEntity(saved);
+    }
+
+    // Get Restaurants Near Location
+    public List<RestaurantResponseDTO> getNearbyRestaurants(double lat, double lng, double radiusKm) {
+
+        List<Restaurant> restaurants = restaurantRepository.findAllActiveRestaurants();
+        List<RestaurantResponseDTO> nearby = new ArrayList<>();
+
+        for (Restaurant restaurant : restaurants) {
+            if (restaurant.getLatitude() == null || restaurant.getLongitude() == null) {
+                continue;
+            }
+            double distance = HelperUtils.calculateDistance(lat, lng, restaurant.getLatitude(), restaurant.getLongitude());
+            if (distance <= radiusKm) {
+                nearby.add(RestaurantResponseDTO.fromEntity(restaurant));
+            }
+        }
+        return nearby;
+    }
+
+    // Restaurant Analytics(average rating, total revenue, completed orders)
+    public Map<String, Object> getRestaurantAnalytics(Integer restaurantId) {
+        restaurantRepository.findActiveById(restaurantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id: " + restaurantId));
+
+        Map<String, Object> analytics = new HashMap<>();
+
+        analytics.put("averageRating", 0.0);
+        analytics.put("totalRevenue", 0.0);
+        analytics.put("completedOrders", 0L);
+
+        return analytics;
+    }
+
+    // Top Selling Menu Items
+    public List<MenuItemResponseDTO> getTopSellingMenuItems(Integer restaurantId) {
+
+        restaurantRepository.findActiveById(restaurantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id: " + restaurantId));
+
+        List<MenuItem> menuItems = menuItemRepository.findByRestaurantId(restaurantId);
+        return MenuItemResponseDTO.fromEntity(menuItems);
+    }
+
+    // Search Menu Items
+    public List<MenuItemResponseDTO> searchMenuItems(String keyword, Double minCalories, Double maxCalories) {
+
+        List<MenuItem> menuItems = menuItemRepository.findAll();
+        List<MenuItemResponseDTO> result = new ArrayList<>();
+
+        for (MenuItem item : menuItems) {
+            if (!item.getIsActive()) {
+                continue;
+            }
+
+            boolean matchesKeyword =
+                    keyword == null || item.getName().toLowerCase().contains(keyword.toLowerCase());
+            boolean matchesCalories = (minCalories == null || item.getCalories() >= minCalories)
+                            && (maxCalories == null || item.getCalories() <= maxCalories);
+
+            if (matchesKeyword && matchesCalories) {
+                result.add(MenuItemResponseDTO.fromEntity(item));
+            }
+        }
+        return result;
     }
 }

@@ -20,8 +20,7 @@ public class PaymentController {
 
     // Create payment record
     @PostMapping("/order/{orderId}")
-    public ResponseEntity<PaymentResponseDTO> processPayment(
-            @PathVariable Integer orderId, @RequestParam String method) {
+    public ResponseEntity<PaymentResponseDTO> processPayment(@PathVariable Integer orderId, @RequestParam String method) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.processPayment(orderId, method));
     }
